@@ -12,8 +12,8 @@ contract Employee {
         bool isHirable;
     }
     EmployeeEmployer[] public employees;
-    string name;
-    bool isHirable;
+    string private name;
+    bool private isHirable;
 
     constructor(string memory _name) {
         name = _name;
@@ -56,7 +56,7 @@ contract Employee {
     function leave(address employeeAddress) public hasEmployee {
         require(
             employees[employees.length - 1].employer == employeeAddress,
-            "Employee was not employed with that employer"
+            "Operation not allowed"
         );
         employees[employees.length - 1].endDate = block.timestamp;
     }
