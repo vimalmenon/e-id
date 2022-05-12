@@ -27,7 +27,6 @@ async function main() {
   await application.deployed();
 
   console.log("Application deployed to:", greeter.address);
-
 }
 
 // We recommend this pattern to be able to use async/await everywhere
