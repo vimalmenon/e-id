@@ -36,30 +36,38 @@ contract Employer {
     uint256 private employeeCount;
     uint256 private verifiedCount;
     uint256 private stakeAmount;
+    address[] public addresses;
 
 
-    constructor(string memory _companyName, uint256 _stakeAmount) public {
+    constructor(string memory _companyName, uint256 _stakeAmount, address _registeredAddress) public {
         companyName = _companyName;
         stakeAmount = _stakeAmount;
+        addresses = [_registeredAddress];
     }
     function recruitEmployee (Employee employee, string memory position) public {
-        employeeCount+=1;
         employee.join(address(this), position);
+        employeeCount+=1;
     }
     function releaseEmployee (Employee employee) public {
-        employeeCount-=1;
         employee.leave(address(this));
+        employeeCount-=1;
+    }
+    function getName() public view returns (string memory) {
+        return companyName;
     }
 }
 
 contract HiringApplication {
+    address[] public list;
+    mapping(address => Employer) public employers;
 
-    mapping(address => Employer) private employers;
-
-    function registerEmployer (string memory companyName) public payable {
-        employers[msg.sender] = new Employer(companyName, msg.value);
+    function registerEmployer (string memory companyName) public payable returns (Employer) {
+        Employer employer = new Employer(companyName, msg.value, msg.sender);
+        employers[address(employer)] = employer;
+        list.push(address(employer));
+        return employer;
     }
-    function registerEmployee () public {
-
+    function getEmployerDetails (address _empoyerAddress) public view returns (string memory) {
+        return employers[_empoyerAddress].getName();
     }
 }
