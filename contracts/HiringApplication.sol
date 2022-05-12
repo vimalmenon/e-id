@@ -112,6 +112,10 @@ contract HiringApplication {
     Employer[] public employerList;
     mapping(address => Employer) public employers;
     mapping(address => Employee) public employees;
+    struct Test {
+        string name;
+        uint age;
+    }
 
     function registerEmployer(string memory companyName) public payable {
         Employer employer = new Employer(companyName, msg.value, msg.sender);
@@ -152,5 +156,8 @@ contract HiringApplication {
             }
         }
         return selectedEmployer;
+    }
+    function checkingStructs() public pure returns (Test memory) {
+        return Test({name: "Vimal Menon", age: 25});
     }
 }

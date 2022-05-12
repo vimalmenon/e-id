@@ -4,24 +4,41 @@ import {ethers} from "ethers";
 import HiringApplication from "../src/artifacts/contracts/HiringApplication.sol/HiringApplication.json";
 import React from "react";
 
-export default function Home() {
+import {EmployerRegister, EmployerDetail } from "../components"
 
+export default function Home() {
+  const [employer, setEmployer] = React.useState(null);
+  const [address, setAddress] = React.useState();
   const login = async () => {
     const provider = new ethers.providers.Web3Provider(window.ethereum);
     await provider.send("eth_requestAccounts");
     const signer = provider.getSigner();
     console.log("Account:", await signer.getAddress());
-  }
-  async function getApplication () {
+  };
+  React.useEffect(() => {
     if (typeof window.ethereum !== undefined) {
       const provider = new ethers.providers.Web3Provider(window.ethereum);
-      const contact = new ethers.Contract("0xe7f1725E7734CE288F8367e1Bb143E90bb3F0512", HiringApplication.abi, provider);
+      const contact = new ethers.Contract("0xDc64a140Aa3E981100a9becA4E685f962f0cF6C9", HiringApplication.abi, provider);
       const signer = provider.getSigner();
-      const address  = await signer.getAddress();
-      const result  = await contact.getEmployerDetail(address)
-      // console.log(provider, new Signer().getAddress())
-      // const result  = await contact.getBalance();
-      console.log(result);
+      signer.getAddress().then((address) => {
+        setAddress(address);
+        contact.checkingStructs().then((data) => {
+          console.log(data);
+        })
+        contact.getEmployerDetail(address).then((result) => {
+          setEmployer(result)
+        })
+      });
+    }
+  }, []);
+  const onRegisterSave = async (value) => {
+    if (typeof window.ethereum !== undefined) {
+      const provider = new ethers.providers.Web3Provider(window.ethereum);
+      const signer = provider.getSigner();
+      const contact = new ethers.Contract("0xe7f1725E7734CE288F8367e1Bb143E90bb3F0512", HiringApplication.abi, signer);
+      contact.registerEmployer(value).then((result) => {
+        setEmployer(result)
+      })
     }
   }
   return (
@@ -32,13 +49,17 @@ export default function Home() {
         <link rel="icon" href="/favicon.ico" />
       </Head>
       <div>
-        <button onClick={login}>
+        {!address && <button onClick={login}>
           Login
-        </button>
-        <button>
+        </button>}
+        {employer === '0x0000000000000000000000000000000000000000' && <button>
           Register
-        </button>
-        <button onClick={() => getApplication()}>Button Clicked</button>
+        </button>}
+      </div>
+      {employer === '0x0000000000000000000000000000000000000000' && <EmployerRegister onRegisterSave={onRegisterSave}/> }
+      <EmployerDetail />
+      <div>
+        {address} {employer}
       </div>
     </div>
   );
