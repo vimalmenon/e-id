@@ -96,12 +96,12 @@ contract HiringApplication {
     function getBalance() public view returns (uint256) {
         return address(this).balance;
     }
-    function hireEmployee (address employeeAddress) public {
+    function hireEmployee (address employeeAddress) public view {
         if (employers[employeeAddress].validatePayee(msg.sender)) {
             console.log("this is validated");
         }
     }
-    function releveEmployee () public {
+    // function releveEmployee () public {
 
-    }
+    // }
 }
