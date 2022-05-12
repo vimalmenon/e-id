@@ -144,4 +144,13 @@ contract HiringApplication {
     // function releveEmployee () public {
 
     // }
+    function getEmployerDetail (address employer) public view returns (Employer) {
+        Employer selectedEmployer;
+        for (uint256 index = 0; index < employerList.length; index++) {
+            if (employerList[index].validatePayee(employer)) {
+                selectedEmployer = employerList[index];
+            }
+        }
+        return selectedEmployer;
+    }
 }
