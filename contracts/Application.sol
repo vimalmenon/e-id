@@ -27,15 +27,39 @@ contract Employee {
     }
     
     function leave (address employeeAddress) public hasEmployee {
-        require(employees[employees.length-1].employer == employeeAddress, "You are not employed with that address");
+        require(employees[employees.length-1].employer == employeeAddress, "Employee was not employed with that employer");
         employees[employees.length-1].endDate = block.timestamp;
     }
 }
 contract Employer {
-    
+    string private companyName;
+    uint256 private employeeCount;
+    uint256 private verifiedCount;
+    uint256 private stakeAmount;
 
+
+    constructor(string memory _companyName, uint256 _stakeAmount) public {
+        companyName = _companyName;
+        stakeAmount = _stakeAmount;
+    }
+    function recruitEmployee (Employee employee, string memory position) public {
+        employeeCount+=1;
+        employee.join(address(this), position);
+    }
+    function releaseEmployee (Employee employee) public {
+        employeeCount-=1;
+        employee.leave(address(this));
+    }
 }
 
-contract Application {
+contract HiringApplication {
 
+    mapping(address => Employer) private employers;
+
+    function registerEmployer (string memory companyName) public payable {
+        employers[msg.sender] = new Employer(companyName, msg.value);
+    }
+    function registerEmployee () public {
+
+    }
 }
