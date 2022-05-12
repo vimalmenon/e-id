@@ -65,6 +65,15 @@ contract Employer {
     function getName() public view returns (string memory) {
         return companyName;
     }
+    function validatePayee(address payee) public view returns (bool) {
+        bool isAvailable = false;
+        for (uint index =0; index < payees.length; index++) {
+            if (payees[index] == payee) {
+                isAvailable = true; 
+            }
+        }
+        return isAvailable;
+    }
 }
 
 contract HiringApplication {
@@ -77,13 +86,22 @@ contract HiringApplication {
         employers[address(employer)] = employer;
         employerList.push(employer);
     }
-    function registerEmployee() public {
-
+    function registerEmployee(string memory name) public {
+        Employee employee = new Employee(name);
+        employees[address(employee)] = employee;
     }
     function getEmployerDetails (address _empoyerAddress) public view returns (string memory) {
         return employers[_empoyerAddress].getName();
     }
     function getBalance() public view returns (uint256) {
         return address(this).balance;
+    }
+    function hireEmployee (address employeeAddress) public {
+        if (employers[employeeAddress].validatePayee(msg.sender)) {
+            console.log("this is validated");
+        }
+    }
+    function releveEmployee () public {
+
     }
 }
