@@ -12,6 +12,13 @@ contract Employee {
         bool isHirable;
     }
     EmployeeEmployer[] public employees;
+    string name;
+    bool isHirable;
+
+    constructor(string memory _name) {
+        name = _name;
+        isHirable = true;
+    }
 
     modifier hasEmployee {
         require(employees.length > 0, "Employee has no employer");
@@ -63,11 +70,15 @@ contract Employer {
 contract HiringApplication {
     Employer[] public employerList;
     mapping(address => Employer) public employers;
+    mapping(address => Employee) public employees;
 
     function registerEmployer (string memory companyName) public payable {
         Employer employer = new Employer(companyName, msg.value, msg.sender);
         employers[address(employer)] = employer;
         employerList.push(employer);
+    }
+    function registerEmployee() public {
+
     }
     function getEmployerDetails (address _empoyerAddress) public view returns (string memory) {
         return employers[_empoyerAddress].getName();
