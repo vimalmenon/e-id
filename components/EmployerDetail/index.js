@@ -1,6 +1,7 @@
 import React from "react";
 
 import { useContract } from "../../utility";
+import { EmployeeRegister, EmployeeEnroll } from "../index";
 
 export const EmployerDetail = ({ employerAddress }) => {
   const { contract } = useContract();
@@ -9,7 +10,6 @@ export const EmployerDetail = ({ employerAddress }) => {
     if (contract && employerAddress) {
       contract.getEmployerDetails(employerAddress).then((data) => {
         setEmployer(data);
-        console.log(data.name, data.employeeCount.toNumber(), data);
       });
     }
   }, [contract, employerAddress]);
@@ -31,6 +31,16 @@ export const EmployerDetail = ({ employerAddress }) => {
         <div>
           <span>Payees : </span>
           <span>{employer.payees.join(" ,")}</span>
+        </div>
+        <div>
+          <button>Register Employee</button>
+          <button>Enroll Employee</button>
+        </div>
+        <div>
+          <EmployeeRegister />
+        </div>
+        <div>
+          <EmployeeEnroll />
         </div>
       </div>
     );
