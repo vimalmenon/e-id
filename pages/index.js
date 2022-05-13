@@ -32,14 +32,7 @@ export default function Home() {
           console.log(data);
         });
         setAddress(address);
-        // contact.checkingStructs().then((data) => {
-        //   console.log(data);
-        // });
         contact.getEmployerDetail(address).then((result) => {
-          contact.getEmployerDetails(result).then((data) => {
-            console.log(data.name, data.employeeCount.toNumber(), data);
-          })
-          console.log(result)
           setEmployer(result);
         });
       });
@@ -75,10 +68,9 @@ export default function Home() {
       {employer === "0x0000000000000000000000000000000000000000" && (
         <EmployerRegister onRegisterSave={onRegisterSave} />
       )}
-      <EmployerDetail />
-      <div>
-        {address} {employer}
-      </div>
+      {employer !== "0x0000000000000000000000000000000000000000" && (
+        <EmployerDetail employerAddress={employer} />
+      )}
     </div>
   );
 }

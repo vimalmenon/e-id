@@ -1,13 +1,13 @@
 import React from "react";
 
-export const EmployerRegister = ({onRegisterSave}) => {
+export const EmployerRegister = ({ onRegisterSave }) => {
   const [name, setName] = React.useState("");
   const onInputChange = (e) => {
-    setName(e.target.value)
+    setName(e.target.value);
   };
   const onSave = () => {
-    onRegisterSave(name)
-  }
+    onRegisterSave(name);
+  };
   return (
     <div>
       <div>
