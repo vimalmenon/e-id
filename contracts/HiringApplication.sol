@@ -62,12 +62,13 @@ contract Employee {
     }
 }
 
+
 contract Employer {
     string private companyName;
     uint256 private employeeCount;
     uint256 private verifiedCount;
     uint256 private stakeAmount;
-    address[] public payees;
+    address[] private payees;
 
     constructor(
         string memory _companyName,
@@ -96,6 +97,9 @@ contract Employer {
     function getName() public view returns (string memory) {
         return companyName;
     }
+    function getEmployeeCount() public view returns (uint256) {
+        return employeeCount;
+    }
 
     function validatePayee(address payee) public view returns (bool) {
         bool isAvailable = false;
@@ -106,6 +110,16 @@ contract Employer {
         }
         return isAvailable;
     }
+    function getPayees () public view returns(address[] memory) {
+        return payees;
+    }
+}
+
+struct EmployerDetail {
+    string name;
+    string id;
+    uint256 employeeCount;
+    address[] payees;
 }
 
 contract HiringApplication {
@@ -131,9 +145,10 @@ contract HiringApplication {
     function getEmployerDetails(address _empoyerAddress)
         public
         view
-        returns (string memory)
+        returns (EmployerDetail memory)
     {
-        return employers[_empoyerAddress].getName();
+        Employer employer = employers[_empoyerAddress];
+        return EmployerDetail({name: employer.getName(), id:"test", employeeCount: employer.getEmployeeCount(), payees: employer.getPayees()});
     }
 
     function getBalance() public view returns (uint256) {
