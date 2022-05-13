@@ -1,15 +1,17 @@
 import Head from "next/head";
-import {ethers} from "ethers";
+import { ethers } from "ethers";
 
 import HiringApplication from "../src/artifacts/contracts/HiringApplication.sol/HiringApplication.json";
 import React from "react";
 
-import {EmployerRegister, EmployerDetail } from "../components"
+import { EmployerRegister, EmployerDetail } from "../components";
 
 export default function Home() {
   const [employer, setEmployer] = React.useState(null);
   const [address, setAddress] = React.useState();
-  const [contactAddress] = React.useState("0xDc64a140Aa3E981100a9becA4E685f962f0cF6C9");
+  const [contactAddress] = React.useState(
+    "0xDc64a140Aa3E981100a9becA4E685f962f0cF6C9"
+  );
   const login = async () => {
     const provider = new ethers.providers.Web3Provider(window.ethereum);
     await provider.send("eth_requestAccounts");
@@ -19,16 +21,23 @@ export default function Home() {
   React.useEffect(() => {
     if (typeof window.ethereum !== undefined) {
       const provider = new ethers.providers.Web3Provider(window.ethereum);
-      const contact = new ethers.Contract(contactAddress, HiringApplication.abi, provider);
+      const contact = new ethers.Contract(
+        contactAddress,
+        HiringApplication.abi,
+        provider
+      );
       const signer = provider.getSigner();
       signer.getAddress().then((address) => {
+        contact.provider.getCode(address).then((data) => {
+          console.log(data);
+        });
         setAddress(address);
         contact.checkingStructs().then((data) => {
           console.log(data);
-        })
+        });
         contact.getEmployerDetail(address).then((result) => {
-          setEmployer(result)
-        })
+          setEmployer(result);
+        });
       });
     }
   }, []);
@@ -36,12 +45,16 @@ export default function Home() {
     if (typeof window.ethereum !== undefined) {
       const provider = new ethers.providers.Web3Provider(window.ethereum);
       const signer = provider.getSigner();
-      const contact = new ethers.Contract(contactAddress, HiringApplication.abi, signer);
+      const contact = new ethers.Contract(
+        contactAddress,
+        HiringApplication.abi,
+        signer
+      );
       contact.registerEmployer(value).then((result) => {
-        setEmployer(result)
-      })
+        setEmployer(result);
+      });
     }
-  }
+  };
   return (
     <div>
       <Head>
@@ -50,14 +63,14 @@ export default function Home() {
         <link rel="icon" href="/favicon.ico" />
       </Head>
       <div>
-        {!address && <button onClick={login}>
-          Login
-        </button>}
-        {employer === '0x0000000000000000000000000000000000000000' && <button>
-          Register
-        </button>}
+        {!address && <button onClick={login}>Login</button>}
+        {employer === "0x0000000000000000000000000000000000000000" && (
+          <button>Register</button>
+        )}
       </div>
-      {employer === '0x0000000000000000000000000000000000000000' && <EmployerRegister onRegisterSave={onRegisterSave}/> }
+      {employer === "0x0000000000000000000000000000000000000000" && (
+        <EmployerRegister onRegisterSave={onRegisterSave} />
+      )}
       <EmployerDetail />
       <div>
         {address} {employer}
