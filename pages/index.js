@@ -4,9 +4,16 @@ import { ethers } from "ethers";
 import HiringApplication from "../src/artifacts/contracts/HiringApplication.sol/HiringApplication.json";
 import React from "react";
 
-import { EmployerRegister, EmployerDetail } from "../components";
+import {
+  EmployerRegister,
+  EmployerDetail,
+  useContext,
+  useAppHelper,
+} from "../components";
 
 export default function Home() {
+  const { isLoggedIn, login: loginAs } = useContext();
+  const { onAppLoginEmployee, onAppLoginEmployer } = useAppHelper();
   const [employer, setEmployer] = React.useState(null);
   const [address, setAddress] = React.useState();
   const [contactAddress] = React.useState(
@@ -27,12 +34,12 @@ export default function Home() {
         provider
       );
       const signer = provider.getSigner();
-      signer.getAddress().then((address) => {
-        setAddress(address);
-        contact.getEmployerDetail(address).then((result) => {
-          setEmployer(result);
-        });
-      });
+      // signer.getAddress().then((address) => {
+      //   setAddress(address);
+      //   contact.getEmployerDetail(address).then((result) => {
+      //     setEmployer(result);
+      //   });
+      // });
     }
   }, []);
   const onRegisterSave = async (value) => {
@@ -57,7 +64,17 @@ export default function Home() {
         <link rel="icon" href="/favicon.ico" />
       </Head>
       <div>
-        {!address && <button onClick={login}>Login</button>}
+        {!isLoggedIn && <button onClick={login}>Login to Metamask</button>}
+        {!loginAs && (
+          <div>
+            <div>
+              <button onClick={onAppLoginEmployee}>Login as Employee</button>
+              <button onClick={onAppLoginEmployer}>Login as Employer</button>
+              <button>Register Employee</button>
+              <button>Register Employer</button>
+            </div>
+          </div>
+        )}
         {employer === "0x0000000000000000000000000000000000000000" && (
           <button>Register</button>
         )}
