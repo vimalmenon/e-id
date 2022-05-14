@@ -35,8 +35,12 @@ export const EmployerDetail = ({ employerAddress }) => {
           <span>{employer.payees.join(" ,")}</span>
         </div>
         <div>
-          <button onClick={() => setRegisterEmployee(!registerEmployee)}>Register Employee</button>
-          <button onClick={() => setEnrollEmployee(!enrollEmployee)}>Enroll Employee</button>
+          <button onClick={() => setRegisterEmployee(!registerEmployee)}>
+            Register Employee
+          </button>
+          <button onClick={() => setEnrollEmployee(!enrollEmployee)}>
+            Enroll Employee
+          </button>
         </div>
         {registerEmployee && (
           <div>

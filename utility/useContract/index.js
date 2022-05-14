@@ -9,6 +9,9 @@ export const useContract = () => {
   );
   const [contract, setContract] = React.useState();
   const [signer, setSigner] = React.useState();
+  const [address, setAddress] = React.useState();
+  const [isLoggedIn, setIsLoggedIn] = React.useState(false);
+
   React.useEffect(() => {
     if (typeof window.ethereum !== undefined) {
       const provider = new ethers.providers.Web3Provider(window.ethereum);
@@ -16,10 +19,22 @@ export const useContract = () => {
         new ethers.Contract(contractAddress, HiringApplication.abi, provider)
       );
       setSigner(provider.getSigner());
+      provider.listAccounts().then((accounts) => {
+        setIsLoggedIn(accounts.length > 0);
+      });
     }
   }, []);
+  React.useEffect(() => {
+    if (isLoggedIn && signer) {
+      signer.getAddress().then((address) => {
+        setAddress(address);
+      });
+    }
+  }, [isLoggedIn, signer]);
   return {
+    isLoggedIn,
     contract,
+    address,
     signer,
   };
 };

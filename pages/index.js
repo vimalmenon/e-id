@@ -28,9 +28,6 @@ export default function Home() {
       );
       const signer = provider.getSigner();
       signer.getAddress().then((address) => {
-        contact.provider.getCode(address).then((data) => {
-          console.log(data);
-        });
         setAddress(address);
         contact.getEmployerDetail(address).then((result) => {
           setEmployer(result);
