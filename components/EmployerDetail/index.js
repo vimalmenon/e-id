@@ -6,6 +6,8 @@ import { EmployeeRegister, EmployeeEnroll } from "../index";
 export const EmployerDetail = ({ employerAddress }) => {
   const { contract } = useContract();
   const [employer, setEmployer] = React.useState();
+  const [registerEmployee, setRegisterEmployee] = React.useState(false);
+  const [enrollEmployee, setEnrollEmployee] = React.useState(false);
   React.useEffect(() => {
     if (contract && employerAddress) {
       contract.getEmployerDetails(employerAddress).then((data) => {
@@ -33,15 +35,19 @@ export const EmployerDetail = ({ employerAddress }) => {
           <span>{employer.payees.join(" ,")}</span>
         </div>
         <div>
-          <button>Register Employee</button>
-          <button>Enroll Employee</button>
+          <button onClick={() => setRegisterEmployee(!registerEmployee)}>Register Employee</button>
+          <button onClick={() => setEnrollEmployee(!enrollEmployee)}>Enroll Employee</button>
         </div>
-        <div>
-          <EmployeeRegister />
-        </div>
-        <div>
-          <EmployeeEnroll />
-        </div>
+        {registerEmployee && (
+          <div>
+            <EmployeeRegister />
+          </div>
+        )}
+        {enrollEmployee && (
+          <div>
+            <EmployeeEnroll />
+          </div>
+        )}
       </div>
     );
   }
