@@ -1,12 +1,15 @@
 import React from "react";
 import Box from "@mui/material/Box";
-import { useAppHelper } from "../";
+import { useAppHelper, useContext } from "../";
 
 export const EmployeeDetail = () => {
+  const { contract, address } = useContext();
   const { onEmployerSwitch, getEmployeeDetail } = useAppHelper();
   React.useEffect(() => {
-    getEmployeeDetail();
-  }, []);
+    if (contract && address) {
+      getEmployeeDetail();
+    }
+  }, [contract, address]);
   return (
     <Box sx={{ display: "flex", flexDirection: "column", flex: 1, padding: 2 }}>
       <Box

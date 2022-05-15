@@ -1,7 +1,7 @@
 import React from "react";
 import { isEmptyContract } from "../../utility";
 
-export const contractAddress = "0x9A9f2CCfdE556A7E9Ff0848998Aa4a0CFD8863AE";
+export const contractAddress = "0x59b670e9fA9D0A427751Af201D676719a970857b";
 
 export const Context = React.createContext({
   contractAddress,
@@ -26,11 +26,19 @@ export const useAppHelper = () => {
       });
     }
   };
-  const onEmployeeRegister = (id, name) => {
+  const onEmployeeRegister = (id, name, address) => {
     if (id && name && contract && isLoggedIn) {
-      signedContact.registerEmployee(id, name).then((result) => {
-        console.log(result);
-      });
+      if (address) {
+        signedContact
+          .registerEmployeeWithPayee(id, name, address)
+          .then((result) => {
+            console.log(result);
+          });
+      } else {
+        signedContact.registerEmployee(id, name).then((result) => {
+          console.log(result);
+        });
+      }
     }
   };
   const onEmployeeSwitch = () => {
@@ -53,7 +61,15 @@ export const useAppHelper = () => {
       }
     });
   };
-  const getEmployeeDetail = async () => {};
+  const getEmployeeDetail = async () => {    
+    contract.getEmployeeAddress(address).then((data) => {
+      if (!isEmptyContract(data)) {
+        contract.getEmployeeDetails(data).then((detail) => {
+          console.log(detail);
+        });
+      }
+    });
+  };
   return {
     onEmployerRegister,
     onEmployeeRegister,
