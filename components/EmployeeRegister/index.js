@@ -11,6 +11,7 @@ export const EmployeeRegister = () => {
   const [input, setInput] = React.useState({
     id: "",
     name: "",
+    address: "",
   });
   const onInputChange = (e) => {
     const { name, value } = e.target;
@@ -23,10 +24,11 @@ export const EmployeeRegister = () => {
     setInput({
       id: "",
       name: "",
+      address: "",
     });
   };
   const onSave = () => {
-    onEmployeeRegister(input.name);
+    onEmployeeRegister(input.id, input.name);
   };
   return (
     <Box
@@ -69,6 +71,17 @@ export const EmployeeRegister = () => {
             size="small"
             value={input.name}
             name="name"
+            onChange={onInputChange}
+            fullWidth
+          />
+        </Box>
+        <Box sx={{ marginY: 2 }}>
+          <TextField
+            label="Address"
+            variant="outlined"
+            size="small"
+            value={input.address}
+            name="address"
             onChange={onInputChange}
             fullWidth
           />

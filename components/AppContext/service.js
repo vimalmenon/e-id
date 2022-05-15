@@ -1,7 +1,7 @@
 import React from "react";
 import { isEmptyContract } from "../../utility";
 
-export const contractAddress = "0x0B306BF915C4d645ff596e518fAf3F9669b97016";
+export const contractAddress = "0x9A9f2CCfdE556A7E9Ff0848998Aa4a0CFD8863AE";
 
 export const Context = React.createContext({
   contractAddress,
@@ -10,18 +10,25 @@ export const Context = React.createContext({
 export const useContext = () => React.useContext(Context);
 
 export const useAppHelper = () => {
-  const { contract, isLoggedIn, setLogin, provider, setEmployer, address, signedContact } =
-    useContext();
+  const {
+    contract,
+    isLoggedIn,
+    setLogin,
+    provider,
+    setEmployer,
+    address,
+    signedContact,
+  } = useContext();
   const onEmployerRegister = (id, name) => {
-    if (name && contract && isLoggedIn) {
-        signedContact.registerEmployer(id, name).then((result) => {
+    if (id && name && contract && isLoggedIn) {
+      signedContact.registerEmployer(id, name).then((result) => {
         console.log(result);
       });
     }
   };
-  const onEmployeeRegister = (name) => {
-    if (name && contract && isLoggedIn) {
-      contract.registerEmployee(name).then((result) => {
+  const onEmployeeRegister = (id, name) => {
+    if (id && name && contract && isLoggedIn) {
+      signedContact.registerEmployee(id, name).then((result) => {
         console.log(result);
       });
     }

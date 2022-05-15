@@ -16,7 +16,8 @@ contract Employee {
     bool private isHirable;
     address[] private payees;
 
-    constructor(string memory _name) {
+    constructor(string memory _id, string memory _name) {
+        id = _id;
         name = _name;
         isHirable = true;
     }
@@ -77,6 +78,9 @@ contract Employee {
             }
         }
         return isAvailable;
+    }
+    function addPayee (address payee) public {
+        payees.push(payee);
     }
 }
 
@@ -167,8 +171,14 @@ contract HiringApplication {
         employerList.push(employer);
     }
 
-    function registerEmployee(string memory name) public {
-        Employee employee = new Employee(name);
+    function registerEmployee(string memory id, string memory name) public {
+        Employee employee = new Employee(id, name);
+        employees[address(employee)] = employee;
+        employeeList.push(employee);
+    }
+    function registerEmployeeWithPayee(string memory id, string memory name, address payee) public {
+        Employee employee = new Employee(id, name);
+        employee.addPayee(payee);
         employees[address(employee)] = employee;
         employeeList.push(employee);
     }
@@ -203,8 +213,14 @@ contract HiringApplication {
         return EmployerDetail({id: employer.getId(), name: employer.getName(), employerAddress:_empoyerAddress, employeeCount: employer.getEmployeeCount(), payees: employer.getPayees()});
     }
 
-    function getEmployeeAddress () public {
-
+    function getEmployeeAddress (address employee) public view returns (Employee) {
+        Employee selectedEmployee;
+        for (uint256 index = 0; index < employeeList.length; index++) {
+            if (employeeList[index].validatePayee(employee)) {
+                selectedEmployee = employeeList[index];
+            }
+        }
+        return selectedEmployee;
     }
     function getEmployeeDetails (address _employeeAddress) public view returns (EmployeeDetail memory){
         Employee employee = employees[_employeeAddress];
