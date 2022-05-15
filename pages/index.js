@@ -1,4 +1,3 @@
-import Head from "next/head";
 import { ethers } from "ethers";
 
 import HiringApplication from "../src/artifacts/contracts/HiringApplication.sol/HiringApplication.json";
@@ -7,6 +6,7 @@ import React from "react";
 import Link from "next/link";
 
 import { AppLayout } from "../Layout";
+import { metadata } from "../data";
 
 import {
   EmployerRegister,
@@ -61,13 +61,8 @@ export default function Home() {
     }
   };
   return (
-    <AppLayout>
+    <AppLayout metadata={metadata.Home}>
       <div>
-        <Head>
-          <title>E ID Application</title>
-          <meta name="description" content="Application for E ID" />
-          <link rel="icon" href="/favicon.ico" />
-        </Head>
         <div>
           {!isLoggedIn && <button onClick={login}>Login to Metamask</button>}
           {!loginAs && (
