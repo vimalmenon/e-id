@@ -24,10 +24,10 @@ export const useAppHelper = () => {
       });
     }
   };
-  const onAppLoginEmployee = () => {
+  const onEmployeeSwitch = () => {
     setLogin(0);
   };
-  const onAppLoginEmployer = () => {
+  const onEmployerSwitch = () => {
     setLogin(1);
   };
   const metamaskLogin = async () => {
@@ -38,8 +38,8 @@ export const useAppHelper = () => {
   return {
     onEmployerRegister,
     onEmployeeRegister,
-    onAppLoginEmployee,
-    onAppLoginEmployer,
+    onEmployeeSwitch,
+    onEmployerSwitch,
     metamaskLogin
   };
 };
