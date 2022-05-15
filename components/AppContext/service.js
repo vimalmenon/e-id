@@ -11,7 +11,7 @@ export const loginAs = { employee: 1, employer: 2 };
 export const useContext = () => React.useContext(Context);
 
 export const useAppHelper = () => {
-  const { contract, isLoggedIn, setLogin } = useContext();
+  const { contract, isLoggedIn, setLogin, provider } = useContext();
   const onEmployerRegister = (name) => {
     if (name && contract && isLoggedIn) {
       contact.registerEmployer(name).then((result) => {
@@ -35,11 +35,17 @@ export const useAppHelper = () => {
   const onAppLogin = () => {
     setLogin();
   };
+  const metamaskLogin = async () => {
+    await provider.send("eth_requestAccounts");
+    const signer = provider.getSigner();
+    console.log("Account:", await signer.getAddress());
+  };
   return {
     onEmployerRegister,
     onEmployeeRegister,
     onAppLoginEmployee,
     onAppLoginEmployer,
+    metamaskLogin,
     onAppLogin,
   };
 };

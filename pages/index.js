@@ -4,6 +4,10 @@ import { ethers } from "ethers";
 import HiringApplication from "../src/artifacts/contracts/HiringApplication.sol/HiringApplication.json";
 import React from "react";
 
+import Link from "next/link";
+
+import { AppLayout } from "../Layout";
+
 import {
   EmployerRegister,
   EmployerDetail,
@@ -57,34 +61,46 @@ export default function Home() {
     }
   };
   return (
-    <div>
-      <Head>
-        <title>E ID Application</title>
-        <meta name="description" content="Application for E ID" />
-        <link rel="icon" href="/favicon.ico" />
-      </Head>
+    <AppLayout>
       <div>
-        {!isLoggedIn && <button onClick={login}>Login to Metamask</button>}
-        {!loginAs && (
-          <div>
+        <Head>
+          <title>E ID Application</title>
+          <meta name="description" content="Application for E ID" />
+          <link rel="icon" href="/favicon.ico" />
+        </Head>
+        <div>
+          {!isLoggedIn && <button onClick={login}>Login to Metamask</button>}
+          {!loginAs && (
             <div>
-              <button onClick={onAppLoginEmployee}>Login as Employee</button>
-              <button onClick={onAppLoginEmployer}>Login as Employer</button>
-              <button>Register Employee</button>
-              <button>Register Employer</button>
+              <div>
+                <Link href="/">
+                  <a>Home</a>
+                </Link>
+                <Link href="/register-employee">
+                  <a>Register Employee</a>
+                </Link>
+                <Link href="/register-employer">
+                  <a>Register Employer</a>
+                </Link>
+                <Link href="/search">
+                  <a>Search</a>
+                </Link>
+                <button onClick={onAppLoginEmployee}>Login as Employee</button>
+                <button onClick={onAppLoginEmployer}>Login as Employer</button>
+              </div>
             </div>
-          </div>
-        )}
+          )}
+          {employer === "0x0000000000000000000000000000000000000000" && (
+            <button>Register</button>
+          )}
+        </div>
         {employer === "0x0000000000000000000000000000000000000000" && (
-          <button>Register</button>
+          <EmployerRegister onRegisterSave={onRegisterSave} />
+        )}
+        {employer !== "0x0000000000000000000000000000000000000000" && (
+          <EmployerDetail employerAddress={employer} />
         )}
       </div>
-      {employer === "0x0000000000000000000000000000000000000000" && (
-        <EmployerRegister onRegisterSave={onRegisterSave} />
-      )}
-      {employer !== "0x0000000000000000000000000000000000000000" && (
-        <EmployerDetail employerAddress={employer} />
-      )}
-    </div>
+    </AppLayout>
   );
 }

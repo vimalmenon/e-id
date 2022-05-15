@@ -7,6 +7,7 @@ import HiringApplication from "../../src/artifacts/contracts/HiringApplication.s
 export { useContext, useAppHelper } from "./service";
 
 export const AppContext = ({ children }) => {
+  const [provider, setProvider] = React.useState();
   const [contract, setContract] = React.useState();
   const [signer, setSigner] = React.useState();
   const [isLoggedIn, setIsLoggedIn] = React.useState(false);
@@ -21,11 +22,12 @@ export const AppContext = ({ children }) => {
         new ethers.Contract(contractAddress, HiringApplication.abi, provider)
       );
       const signer = provider.getSigner();
-      setSigner(signer);
       provider.listAccounts().then((accounts) => {
         setAccounts(accounts);
         setIsLoggedIn(accounts.length > 0);
       });
+      setProvider(provider);
+      setSigner(signer);
     }
   }, []);
   React.useEffect(() => {
@@ -43,6 +45,7 @@ export const AppContext = ({ children }) => {
         contract,
         setLogin,
         accounts,
+        provider,
         address,
         signer,
         login,
