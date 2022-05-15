@@ -5,17 +5,39 @@ import { useAppHelper } from "../";
 export const EmployeeDetail = () => {
   const { onEmployerSwitch } = useAppHelper();
   return (
-    <Box sx={{ display: "flex", flexDirection: "column", flex: 1 }}>
+    <Box sx={{ display: "flex", flexDirection: "column", flex: 1, padding: 2 }}>
       <Box
         sx={{
           display: "flex",
           flex: 1,
           justifyContent: "end",
-          fontSize: "12px",
           margin: 1,
         }}
       >
-        <span onClick={onEmployerSwitch}>Switch as Employer</span>
+        <Box
+          component={"span"}
+          sx={{
+            display: "flex",
+            flex: 1,
+            fontSize: "25px",
+            justifyContent: "center",
+            margin: 1,
+            fontWeight: "bold",
+          }}
+        >
+          Employee Detail
+        </Box>
+        <Box
+          component={"span"}
+          sx={{
+            display: "flex",
+            fontSize: "12px",
+            alignItems: "center",
+          }}
+          onClick={onEmployerSwitch}
+        >
+          Switch as Employer
+        </Box>
       </Box>
       <Box sx={{ display: "flex", flex: 1 }}>This is Employee Detail</Box>
     </Box>

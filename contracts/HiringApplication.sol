@@ -117,8 +117,14 @@ contract Employer {
 
 struct EmployerDetail {
     string name;
-    string id;
+    address employerAddress;
     uint256 employeeCount;
+    address[] payees;
+}
+
+struct EmployeeDetail {
+    string name;
+    address employerAddress;
     address[] payees;
 }
 
@@ -126,10 +132,6 @@ contract HiringApplication {
     Employer[] public employerList;
     mapping(address => Employer) public employers;
     mapping(address => Employee) public employees;
-    struct Test {
-        string name;
-        uint age;
-    }
 
     function registerEmployer(string memory companyName) public payable {
         Employer employer = new Employer(companyName, msg.value, msg.sender);
@@ -148,7 +150,7 @@ contract HiringApplication {
         returns (EmployerDetail memory)
     {
         Employer employer = employers[_empoyerAddress];
-        return EmployerDetail({name: employer.getName(), id:"test", employeeCount: employer.getEmployeeCount(), payees: employer.getPayees()});
+        return EmployerDetail({name: employer.getName(), employerAddress:_empoyerAddress, employeeCount: employer.getEmployeeCount(), payees: employer.getPayees()});
     }
 
     function getBalance() public view returns (uint256) {
@@ -171,8 +173,5 @@ contract HiringApplication {
             }
         }
         return selectedEmployer;
-    }
-    function checkingStructs() public pure returns (Test memory) {
-        return Test({name: "Vimal Menon", age: 25});
     }
 }

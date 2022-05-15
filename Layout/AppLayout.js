@@ -6,6 +6,7 @@ import Toolbar from "@mui/material/Toolbar";
 import Typography from "@mui/material/Typography";
 import Button from "@mui/material/Button";
 import { useRouter } from "next/router";
+import { blue } from "@mui/material/colors";
 
 export const AppLayout = ({ children, metadata }) => {
   const { push } = useRouter();
@@ -73,8 +74,19 @@ export const AppLayout = ({ children, metadata }) => {
         </Toolbar>
       </AppBar>
       <Box sx={{ marginTop: "70px", display: "flex" }}>{children}</Box>
-      <Box sx={{ display: "flex", size: "10px" }}>
-        <footer>All right reserved</footer>
+      <Box
+        sx={{
+          display: "flex",
+          fontSize: "10px",
+          background: blue[500],
+          paddingY: 1,
+          paddingX: 2,
+          color: "white",
+          marginY: 1,
+          justifyContent: "end",
+        }}
+      >
+        <footer>All right reserved @ 2022</footer>
       </Box>
     </Box>
   );

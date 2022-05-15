@@ -14,7 +14,7 @@ export const AppContext = ({ children }) => {
   const [address, setAddress] = React.useState();
   const [login, setLogin] = React.useState(0);
   const [accounts, setAccounts] = React.useState([]);
-  const [employer, setEmployer] = React.useState({});
+  const [employer, setEmployer] = React.useState();
 
   React.useEffect(() => {
     if (typeof window.ethereum !== undefined) {

@@ -1,6 +1,7 @@
 import React from "react";
+import { isEmptyContract } from "../../utility";
 
-export const contractAddress = "0xA51c1fc2f0D1a1b8494Ed1FE312d7C3a78Ed91C0";
+export const contractAddress = "0x9A676e781A523b5d0C0e43731313A708CB607508";
 
 export const Context = React.createContext({
   contractAddress,
@@ -38,9 +39,12 @@ export const useAppHelper = () => {
   };
   const getEmployerDetail = async () => {
     contract.getEmployerDetail(address).then((data) => {
-      contract.getEmployerDetails(data).then((detail) => {
-        setEmployer(detail);
-      });
+      if (!isEmptyContract(data)) {
+        contract.getEmployerDetails(data).then((detail) => {
+          setEmployer(detail);
+        });
+      }
+      console.log(data);
     });
   };
   return {
