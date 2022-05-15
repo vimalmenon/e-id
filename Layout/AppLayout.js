@@ -72,9 +72,7 @@ export const AppLayout = ({ children, metadata }) => {
           </Box>
         </Toolbar>
       </AppBar>
-      <Box sx={{ marginTop: "70px", display: "flex" }}>
-        {children}
-      </Box>
+      <Box sx={{ marginTop: "70px", display: "flex" }}>{children}</Box>
       <Box sx={{ display: "flex", size: "10px" }}>
         <footer>All right reserved</footer>
       </Box>

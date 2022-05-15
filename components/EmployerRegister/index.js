@@ -5,7 +5,10 @@ import TextField from "@mui/material/TextField";
 import Button from "@mui/material/Button";
 import Divider from "@mui/material/Divider";
 
-export const EmployerRegister = ({ onRegisterSave }) => {
+import { useAppHelper } from "../AppContext";
+
+export const EmployerRegister = () => {
+  const { onEmployerRegister } = useAppHelper();
   const [input, setInput] = React.useState({
     id: "",
     name: "",
@@ -16,6 +19,15 @@ export const EmployerRegister = ({ onRegisterSave }) => {
       ...input,
       [name]: value,
     });
+  };
+  const onInputCancel = () => {
+    setInput({
+      id: "",
+      name: "",
+    });
+  };
+  const onSave = () => {
+    onEmployerRegister(input.name);
   };
   return (
     <Box
@@ -65,8 +77,12 @@ export const EmployerRegister = ({ onRegisterSave }) => {
         <Box
           sx={{ marginY: 2, display: "flex", justifyContent: "space-between" }}
         >
-          <Button variant="contained">Register</Button>
-          <Button variant="outlined">Cancel</Button>
+          <Button variant="contained" onClick={onSave}>
+            Register
+          </Button>
+          <Button variant="outlined" onClick={onInputCancel}>
+            Cancel
+          </Button>
         </Box>
       </Box>
     </Box>

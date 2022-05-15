@@ -4,15 +4,15 @@ import { ethers } from "ethers";
 import { Context, contractAddress } from "./service";
 import HiringApplication from "../../src/artifacts/contracts/HiringApplication.sol/HiringApplication.json";
 
-export { useContext, useAppHelper } from "./service";
+export { useContext, useAppHelper} from "./service";
 
 export const AppContext = ({ children }) => {
   const [provider, setProvider] = React.useState();
   const [contract, setContract] = React.useState();
   const [signer, setSigner] = React.useState();
   const [isLoggedIn, setIsLoggedIn] = React.useState(false);
-  const [address, setAddress] = React.useState();
-  const [login, setLogin] = React.useState();
+  const [address, setAddress] = React.useState();  
+  const [login, setLogin] = React.useState(0);
   const [accounts, setAccounts] = React.useState([]);
 
   React.useEffect(() => {

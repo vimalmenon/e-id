@@ -1,5 +1,6 @@
 import React from "react";
+import Box from "@mui/material/Box";
 
 export const EmployeeEnroll = () => {
-  return <div>This is employee enrollment</div>;
+  return <Box>This is employee enrollment</Box>;
 };

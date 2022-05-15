@@ -1,16 +1,18 @@
 import { ethers } from "ethers";
 
 import HiringApplication from "../src/artifacts/contracts/HiringApplication.sol/HiringApplication.json";
+import Box from "@mui/material/Box";
 import React from "react";
 
 import { AppLayout } from "../Layout";
 import { metadata } from "../data";
 
 import {
-  EmployerRegister,
-  EmployerDetail,
   useContext,
   useAppHelper,
+  EmployerDetail,
+  EmployeeDetail,
+  EmployerRegister,
 } from "../components";
 
 export default function Home() {
@@ -60,7 +62,8 @@ export default function Home() {
   };
   return (
     <AppLayout metadata={metadata.Home}>
-      <div>
+      <Box>
+        {loginAs === 0 ? <EmployeeDetail /> : <EmployerDetail />}
         <div>
           {!isLoggedIn && <button onClick={login}>Login to Metamask</button>}
           {!loginAs && (
@@ -71,17 +74,11 @@ export default function Home() {
               </div>
             </div>
           )}
-          {employer === "0x0000000000000000000000000000000000000000" && (
-            <button>Register</button>
-          )}
         </div>
-        {employer === "0x0000000000000000000000000000000000000000" && (
-          <EmployerRegister onRegisterSave={onRegisterSave} />
-        )}
         {employer !== "0x0000000000000000000000000000000000000000" && (
           <EmployerDetail employerAddress={employer} />
         )}
-      </div>
+      </Box>
     </AppLayout>
   );
 }
