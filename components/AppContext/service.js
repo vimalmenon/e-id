@@ -9,7 +9,8 @@ export const Context = React.createContext({
 export const useContext = () => React.useContext(Context);
 
 export const useAppHelper = () => {
-  const { contract, isLoggedIn, setLogin, provider } = useContext();
+  const { contract, isLoggedIn, setLogin, provider, setEmployer, address } =
+    useContext();
   const onEmployerRegister = (name) => {
     if (name && contract && isLoggedIn) {
       contact.registerEmployer(name).then((result) => {
@@ -35,11 +36,19 @@ export const useAppHelper = () => {
     const signer = provider.getSigner();
     console.log("Account:", await signer.getAddress());
   };
+  const getEmployerDetail = async () => {
+    contract.getEmployerDetail(address).then((data) => {
+      contract.getEmployerDetails(data).then((detail) => {
+        setEmployer(detail);
+      });
+    });
+  };
   return {
     onEmployerRegister,
     onEmployeeRegister,
+    getEmployerDetail,
     onEmployeeSwitch,
     onEmployerSwitch,
-    metamaskLogin
+    metamaskLogin,
   };
 };

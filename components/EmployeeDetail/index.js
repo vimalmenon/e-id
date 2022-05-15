@@ -17,7 +17,7 @@ export const EmployeeDetail = () => {
       >
         <span onClick={onEmployerSwitch}>Switch as Employer</span>
       </Box>
-      <Box>This is Employee Detail</Box>
+      <Box sx={{ display: "flex", flex: 1 }}>This is Employee Detail</Box>
     </Box>
   );
 };

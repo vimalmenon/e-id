@@ -4,16 +4,17 @@ import { ethers } from "ethers";
 import { Context, contractAddress } from "./service";
 import HiringApplication from "../../src/artifacts/contracts/HiringApplication.sol/HiringApplication.json";
 
-export { useContext, useAppHelper} from "./service";
+export { useContext, useAppHelper } from "./service";
 
 export const AppContext = ({ children }) => {
   const [provider, setProvider] = React.useState();
   const [contract, setContract] = React.useState();
   const [signer, setSigner] = React.useState();
   const [isLoggedIn, setIsLoggedIn] = React.useState(false);
-  const [address, setAddress] = React.useState();  
+  const [address, setAddress] = React.useState();
   const [login, setLogin] = React.useState(0);
   const [accounts, setAccounts] = React.useState([]);
+  const [employer, setEmployer] = React.useState({});
 
   React.useEffect(() => {
     if (typeof window.ethereum !== undefined) {
@@ -41,11 +42,13 @@ export const AppContext = ({ children }) => {
     <Context.Provider
       value={{
         contractAddress,
+        setEmployer,
         isLoggedIn,
         contract,
         setLogin,
         accounts,
         provider,
+        employer,
         address,
         signer,
         login,
