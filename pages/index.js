@@ -3,8 +3,6 @@ import { ethers } from "ethers";
 import HiringApplication from "../src/artifacts/contracts/HiringApplication.sol/HiringApplication.json";
 import React from "react";
 
-import Link from "next/link";
-
 import { AppLayout } from "../Layout";
 import { metadata } from "../data";
 
@@ -68,18 +66,6 @@ export default function Home() {
           {!loginAs && (
             <div>
               <div>
-                <Link href="/">
-                  <a>Home</a>
-                </Link>
-                <Link href="/register-employee">
-                  <a>Register Employee</a>
-                </Link>
-                <Link href="/register-employer">
-                  <a>Register Employer</a>
-                </Link>
-                <Link href="/search">
-                  <a>Search</a>
-                </Link>
                 <button onClick={onAppLoginEmployee}>Login as Employee</button>
                 <button onClick={onAppLoginEmployer}>Login as Employer</button>
               </div>
