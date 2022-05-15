@@ -27,7 +27,7 @@ export const EmployerRegister = () => {
     });
   };
   const onSave = () => {
-    onEmployerRegister(input.name);
+    onEmployerRegister(input.id, input.name);
   };
   return (
     <Box

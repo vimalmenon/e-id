@@ -9,17 +9,17 @@ contract Employee {
         string position;
         uint256 startDate;
         uint256 endDate;
-        bool isHirable;
     }
     EmployeeEmployer[] public employees;
+    string private id;
     string private name;
     bool private isHirable;
+    address[] private payees;
 
     constructor(string memory _name) {
         name = _name;
         isHirable = true;
     }
-
     modifier hasEmployee() {
         require(employees.length > 0, "Employee has no employer");
         _;
@@ -32,14 +32,13 @@ contract Employee {
                     employer: employeeAddress,
                     startDate: block.timestamp,
                     endDate: 0,
-                    isHirable: false,
                     position: position
                 })
             );
             return;
         }
         require(
-            employees[employees.length - 1].isHirable == true,
+            isHirable == true,
             "Employee cannot be hired"
         );
         employees.push(
@@ -47,12 +46,10 @@ contract Employee {
                 employer: employeeAddress,
                 startDate: block.timestamp,
                 endDate: 0,
-                isHirable: false,
                 position: position
             })
         );
     }
-
     function leave(address employeeAddress) public hasEmployee {
         require(
             employees[employees.length - 1].employer == employeeAddress,
@@ -60,10 +57,32 @@ contract Employee {
         );
         employees[employees.length - 1].endDate = block.timestamp;
     }
+    function getId() public view returns (string memory) {
+        return id;
+    }
+    function getName() public view returns (string memory) {
+        return name;
+    }
+    function getPayee() public view returns (address[] memory) {
+        return payees;
+    }
+    function getIsHirable () public view returns (bool) {
+        return isHirable;
+    }
+    function validatePayee(address payee) public view returns (bool) {
+        bool isAvailable = false;
+        for (uint256 index = 0; index < payees.length; index++) {
+            if (payees[index] == payee) {
+                isAvailable = true;
+            }
+        }
+        return isAvailable;
+    }
 }
 
 
 contract Employer {
+    string private id;
     string private companyName;
     uint256 private employeeCount;
     uint256 private verifiedCount;
@@ -71,10 +90,12 @@ contract Employer {
     address[] private payees;
 
     constructor(
+        string memory _id,
         string memory _companyName,
         uint256 _stakeAmount,
         address _registeredAddress
     ) {
+        id = _id;
         companyName = _companyName;
         stakeAmount = _stakeAmount;
         payees = [_registeredAddress];
@@ -113,9 +134,13 @@ contract Employer {
     function getPayees () public view returns(address[] memory) {
         return payees;
     }
+    function getId () public view returns (string memory) {
+        return id;
+    }
 }
 
 struct EmployerDetail {
+    string id;
     string name;
     address employerAddress;
     uint256 employeeCount;
@@ -123,18 +148,21 @@ struct EmployerDetail {
 }
 
 struct EmployeeDetail {
+    string id;
     string name;
-    address employerAddress;
+    address employeeAddress;
+    bool isHirable;
     address[] payees;
 }
 
 contract HiringApplication {
     Employer[] public employerList;
+    Employee[] public employeeList;
     mapping(address => Employer) public employers;
     mapping(address => Employee) public employees;
 
-    function registerEmployer(string memory companyName) public payable {
-        Employer employer = new Employer(companyName, msg.value, msg.sender);
+    function registerEmployer(string memory id, string memory companyName) public payable {
+        Employer employer = new Employer(id, companyName, msg.value, msg.sender);
         employers[address(employer)] = employer;
         employerList.push(employer);
     }
@@ -142,15 +170,7 @@ contract HiringApplication {
     function registerEmployee(string memory name) public {
         Employee employee = new Employee(name);
         employees[address(employee)] = employee;
-    }
-
-    function getEmployerDetails(address _empoyerAddress)
-        public
-        view
-        returns (EmployerDetail memory)
-    {
-        Employer employer = employers[_empoyerAddress];
-        return EmployerDetail({name: employer.getName(), employerAddress:_empoyerAddress, employeeCount: employer.getEmployeeCount(), payees: employer.getPayees()});
+        employeeList.push(employee);
     }
 
     function getBalance() public view returns (uint256) {
@@ -165,7 +185,7 @@ contract HiringApplication {
     // function releveEmployee () public {
 
     // }
-    function getEmployerDetail (address employer) public view returns (Employer) {
+    function getEmployerAddress (address employer) public view returns (Employer) {
         Employer selectedEmployer;
         for (uint256 index = 0; index < employerList.length; index++) {
             if (employerList[index].validatePayee(employer)) {
@@ -173,5 +193,21 @@ contract HiringApplication {
             }
         }
         return selectedEmployer;
+    }
+    function getEmployerDetails(address _empoyerAddress)
+        public
+        view
+        returns (EmployerDetail memory)
+    {
+        Employer employer = employers[_empoyerAddress];
+        return EmployerDetail({id: employer.getId(), name: employer.getName(), employerAddress:_empoyerAddress, employeeCount: employer.getEmployeeCount(), payees: employer.getPayees()});
+    }
+
+    function getEmployeeAddress () public {
+
+    }
+    function getEmployeeDetails (address _employeeAddress) public view returns (EmployeeDetail memory){
+        Employee employee = employees[_employeeAddress];
+        return EmployeeDetail({id: employee.getId(), name: employee.getName(), employeeAddress: _employeeAddress, isHirable: employee.getIsHirable(), payees: employee.getPayee()});
     }
 }

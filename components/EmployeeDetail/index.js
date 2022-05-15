@@ -3,7 +3,10 @@ import Box from "@mui/material/Box";
 import { useAppHelper } from "../";
 
 export const EmployeeDetail = () => {
-  const { onEmployerSwitch } = useAppHelper();
+  const { onEmployerSwitch, getEmployeeDetail } = useAppHelper();
+  React.useEffect(() => {
+    getEmployeeDetail();
+  }, []);
   return (
     <Box sx={{ display: "flex", flexDirection: "column", flex: 1, padding: 2 }}>
       <Box

@@ -1,7 +1,7 @@
 import React from "react";
 import { isEmptyContract } from "../../utility";
 
-export const contractAddress = "0x9A676e781A523b5d0C0e43731313A708CB607508";
+export const contractAddress = "0x0B306BF915C4d645ff596e518fAf3F9669b97016";
 
 export const Context = React.createContext({
   contractAddress,
@@ -10,11 +10,11 @@ export const Context = React.createContext({
 export const useContext = () => React.useContext(Context);
 
 export const useAppHelper = () => {
-  const { contract, isLoggedIn, setLogin, provider, setEmployer, address } =
+  const { contract, isLoggedIn, setLogin, provider, setEmployer, address, signedContact } =
     useContext();
-  const onEmployerRegister = (name) => {
+  const onEmployerRegister = (id, name) => {
     if (name && contract && isLoggedIn) {
-      contact.registerEmployer(name).then((result) => {
+        signedContact.registerEmployer(id, name).then((result) => {
         console.log(result);
       });
     }
@@ -38,18 +38,19 @@ export const useAppHelper = () => {
     console.log("Account:", await signer.getAddress());
   };
   const getEmployerDetail = async () => {
-    contract.getEmployerDetail(address).then((data) => {
+    contract.getEmployerAddress(address).then((data) => {
       if (!isEmptyContract(data)) {
         contract.getEmployerDetails(data).then((detail) => {
           setEmployer(detail);
         });
       }
-      console.log(data);
     });
   };
+  const getEmployeeDetail = async () => {};
   return {
     onEmployerRegister,
     onEmployeeRegister,
+    getEmployeeDetail,
     getEmployerDetail,
     onEmployeeSwitch,
     onEmployerSwitch,

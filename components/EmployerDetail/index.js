@@ -50,8 +50,8 @@ export const EmployerDetail = () => {
             <Box sx={{ flex: 2 }}>Value</Box>
           </Box>
           <Box sx={{ display: "flex" }}>
-            <Box sx={{ flex: 1 }}>Address</Box>
-            <Box sx={{ flex: 2 }}>{employer.id}</Box>
+            <Box sx={{ flex: 1 }}>Employer Address</Box>
+            <Box sx={{ flex: 2 }}>{employer.employerAddress}</Box>
           </Box>
           <Box sx={{ display: "flex" }}>
             <Box sx={{ flex: 1 }}>ID</Box>
