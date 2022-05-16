@@ -10,6 +10,7 @@ export const EmployerDetail = () => {
       getEmployerDetail();
     }
   }, [contract]);
+  console.log()
   return (
     <Box sx={{ display: "flex", flexDirection: "column", flex: 1, padding: 2 }}>
       <Box

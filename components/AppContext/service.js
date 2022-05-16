@@ -18,6 +18,7 @@ export const useAppHelper = () => {
     setEmployer,
     address,
     signedContact,
+    setEmployee,
   } = useContext();
   const onEmployerRegister = (id, name) => {
     if (id && name && contract && isLoggedIn) {
@@ -61,11 +62,11 @@ export const useAppHelper = () => {
       }
     });
   };
-  const getEmployeeDetail = async () => {    
+  const getEmployeeDetail = async () => {
     contract.getEmployeeAddress(address).then((data) => {
       if (!isEmptyContract(data)) {
         contract.getEmployeeDetails(data).then((detail) => {
-          console.log(detail);
+          setEmployee(detail);
         });
       }
     });

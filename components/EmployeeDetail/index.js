@@ -3,7 +3,7 @@ import Box from "@mui/material/Box";
 import { useAppHelper, useContext } from "../";
 
 export const EmployeeDetail = () => {
-  const { contract, address } = useContext();
+  const { contract, address, employee } = useContext();
   const { onEmployerSwitch, getEmployeeDetail } = useAppHelper();
   React.useEffect(() => {
     if (contract && address) {
@@ -45,7 +45,26 @@ export const EmployeeDetail = () => {
           Switch as Employer
         </Box>
       </Box>
-      <Box sx={{ display: "flex", flex: 1 }}>This is Employee Detail</Box>
+      {employee && (
+        <Box sx={{ display: "flex", flexDirection: "column", gap: "5px" }}>
+          <Box sx={{ display: "flex" }}>
+            <Box sx={{ flex: 1 }}>Property</Box>
+            <Box sx={{ flex: 2 }}>Value</Box>
+          </Box>
+          <Box sx={{ display: "flex" }}>
+            <Box sx={{ flex: 1 }}>Employee Address</Box>
+            <Box sx={{ flex: 2 }}>{employee.employeeAddress}</Box>
+          </Box>
+          <Box sx={{ display: "flex" }}>
+            <Box sx={{ flex: 1 }}>ID</Box>
+            <Box sx={{ flex: 2 }}>{employee.id}</Box>
+          </Box>
+          <Box sx={{ display: "flex" }}>
+            <Box sx={{ flex: 1 }}>Name</Box>
+            <Box sx={{ flex: 2 }}>{employee.name}</Box>
+          </Box>
+        </Box>
+      )}
     </Box>
   );
 };

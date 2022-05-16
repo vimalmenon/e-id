@@ -164,6 +164,11 @@ contract HiringApplication {
     Employee[] public employeeList;
     mapping(address => Employer) public employers;
     mapping(address => Employee) public employees;
+    string private version;
+
+    constructor () {
+        version = "v0.0.0";
+    }
 
     function registerEmployer(string memory id, string memory companyName) public payable {
         Employer employer = new Employer(id, companyName, msg.value, msg.sender);
@@ -176,6 +181,7 @@ contract HiringApplication {
         employees[address(employee)] = employee;
         employeeList.push(employee);
     }
+
     function registerEmployeeWithPayee(string memory id, string memory name, address payee) public {
         Employee employee = new Employee(id, name);
         employee.addPayee(payee);
@@ -225,5 +231,8 @@ contract HiringApplication {
     function getEmployeeDetails (address _employeeAddress) public view returns (EmployeeDetail memory){
         Employee employee = employees[_employeeAddress];
         return EmployeeDetail({id: employee.getId(), name: employee.getName(), employeeAddress: _employeeAddress, isHirable: employee.getIsHirable(), payees: employee.getPayee()});
+    }
+    function getVersion() public view returns(string memory) {
+        return version;
     }
 }
