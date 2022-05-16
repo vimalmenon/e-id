@@ -11,4 +11,8 @@ export const metadata = {
     title: "Register Employer | E ID Application",
     description: "Blockchain application for Employee and Employer ",
   },
+  Search : {
+    title: "Search | E ID Application",
+    description: "Blockchain application for Employee and Employer ",
+  }
 };
