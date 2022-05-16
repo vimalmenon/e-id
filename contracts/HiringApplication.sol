@@ -165,6 +165,7 @@ contract HiringApplication {
     mapping(address => Employer) public employers;
     mapping(address => Employee) public employees;
     string private version;
+    event AddEvent(address indexed from, address indexed createdAddress, string msg);
 
     constructor () {
         version = "v0.0.0";
@@ -174,19 +175,22 @@ contract HiringApplication {
         Employer employer = new Employer(id, companyName, msg.value, msg.sender);
         employers[address(employer)] = employer;
         employerList.push(employer);
+        emit AddEvent(msg.sender, address(employer), string(abi.encodePacked("Employer ", companyName, " has been added")));
     }
 
-    function registerEmployee(string memory id, string memory name) public {
-        Employee employee = new Employee(id, name);
+    function registerEmployee(string memory id, string memory employeeName) public {
+        Employee employee = new Employee(id, employeeName);
         employees[address(employee)] = employee;
         employeeList.push(employee);
+        emit AddEvent(msg.sender, address(employee), string(abi.encodePacked("Employee ", employeeName, " has been added")));
     }
 
-    function registerEmployeeWithPayee(string memory id, string memory name, address payee) public {
-        Employee employee = new Employee(id, name);
+    function registerEmployeeWithPayee(string memory id, string memory employeeName, address payee) public {
+        Employee employee = new Employee(id, employeeName);
         employee.addPayee(payee);
         employees[address(employee)] = employee;
         employeeList.push(employee);
+        emit AddEvent(msg.sender, address(employee), string(abi.encodePacked("Employee ", employeeName, " has been added")));
     }
 
     function getBalance() public view returns (uint256) {

@@ -1,7 +1,7 @@
 import React from "react";
 import { isEmptyContract } from "../../utility";
 
-export const contractAddress = "0x59b670e9fA9D0A427751Af201D676719a970857b";
+export const contractAddress = "0xa82fF9aFd8f496c3d6ac40E2a0F282E47488CFc9";
 
 export const Context = React.createContext({
   contractAddress,

@@ -17,7 +17,22 @@ export const AppContext = ({ children }) => {
   const [accounts, setAccounts] = React.useState([]);
   const [employer, setEmployer] = React.useState();
   const [employee, setEmployee] = React.useState();
+  const [logs, setLogs] = React.useState([]);
 
+  React.useEffect(() => {
+    if (contract) {
+      contract.on("AddEvent", (createdBy, createdAddress, msg) => {
+        setLogs([
+          {
+            createdBy,
+            address: createdAddress,
+            msg,
+          },
+          ...logs,
+        ]);
+      });
+    }
+  }, [contract]);
   React.useEffect(() => {
     if (typeof window.ethereum !== undefined) {
       const provider = new ethers.providers.Web3Provider(window.ethereum);
@@ -25,8 +40,12 @@ export const AppContext = ({ children }) => {
         new ethers.Contract(contractAddress, HiringApplication.abi, provider)
       );
       const signer = provider.getSigner();
-      const signedContract = new ethers.Contract(contractAddress, HiringApplication.abi, signer)
-      setSignedContract(signedContract)
+      const signedContract = new ethers.Contract(
+        contractAddress,
+        HiringApplication.abi,
+        signer
+      );
+      setSignedContract(signedContract);
       provider.listAccounts().then((accounts) => {
         setAccounts(accounts);
         setIsLoggedIn(accounts.length > 0);
