@@ -69,6 +69,12 @@ export const AppLayout = ({ children, metadata }) => {
               >
                 Search
               </Button>
+              <Button
+                sx={{ my: 2, color: "white", display: "block" }}
+                onClick={() => push("/logs")}
+              >
+                Logs
+              </Button>
             </Box>
           </Box>
         </Toolbar>

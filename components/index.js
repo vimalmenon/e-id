@@ -5,3 +5,4 @@ export * from "./EmployeeEnroll";
 export * from "./EmployerRegister";
 export * from "./EmployeeRegister";
 export * from "./Search";
+export * from "./Logs";

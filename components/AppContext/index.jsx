@@ -18,21 +18,22 @@ export const AppContext = ({ children }) => {
   const [employer, setEmployer] = React.useState();
   const [employee, setEmployee] = React.useState();
   const [logs, setLogs] = React.useState([]);
+  const logsRef = React.useRef([]);
 
   React.useEffect(() => {
     if (contract) {
       contract.on("AddEvent", (createdBy, createdAddress, msg) => {
-        setLogs([
-          {
-            createdBy,
-            address: createdAddress,
-            msg,
-          },
-          ...logs,
-        ]);
+        logsRef.current.unshift({
+          createdBy,
+          address: createdAddress,
+          msg,
+        });
       });
     }
   }, [contract]);
+  setInterval(() => {
+    setLogs(logsRef.current);
+  }, 1000);
   React.useEffect(() => {
     if (typeof window.ethereum !== undefined) {
       const provider = new ethers.providers.Web3Provider(window.ethereum);
@@ -78,6 +79,7 @@ export const AppContext = ({ children }) => {
         address,
         signer,
         login,
+        logs,
       }}
     >
       {children}
