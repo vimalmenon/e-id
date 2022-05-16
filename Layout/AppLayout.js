@@ -51,11 +51,23 @@ export const AppLayout = ({ children, metadata }) => {
             <Box sx={{ display: "flex", flex: "0 0 auto" }}>
               <Button
                 sx={{ my: 2, color: "white", display: "block" }}
-                onClick={() => push("/register-employee")}
+                onClick={() => push("/employee")}
               >
-                Register Employee{" "}
+                Employee
               </Button>
 
+              <Button
+                sx={{ my: 2, color: "white", display: "block" }}
+                onClick={() => push("/register-employee")}
+              >
+                Register Employee
+              </Button>
+              <Button
+                sx={{ my: 2, color: "white", display: "block" }}
+                onClick={() => push("/employer")}
+              >
+                Employer
+              </Button>
               <Button
                 sx={{ my: 2, color: "white", display: "block" }}
                 onClick={() => push("/register-employer")}

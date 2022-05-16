@@ -4,13 +4,12 @@ import { useAppHelper, useContext } from "../";
 
 export const EmployerDetail = () => {
   const { getEmployerDetail, onEmployeeSwitch } = useAppHelper();
-  const { employer, contract } = useContext();
+  const { employer, contract, address } = useContext();
   React.useEffect(() => {
-    if (contract) {
+    if (contract && address) {
       getEmployerDetail();
     }
-  }, [contract]);
-  console.log()
+  }, [contract, address]);
   return (
     <Box sx={{ display: "flex", flexDirection: "column", flex: 1, padding: 2 }}>
       <Box

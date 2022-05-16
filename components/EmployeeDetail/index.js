@@ -63,6 +63,10 @@ export const EmployeeDetail = () => {
             <Box sx={{ flex: 1 }}>Name</Box>
             <Box sx={{ flex: 2 }}>{employee.name}</Box>
           </Box>
+          <Box sx={{ display: "flex" }}>
+            <Box sx={{ flex: 1 }}>Is Hirable</Box>
+            <Box sx={{ flex: 2 }}>{employee.isHirable ? "True" : "False"}</Box>
+          </Box>
         </Box>
       )}
     </Box>

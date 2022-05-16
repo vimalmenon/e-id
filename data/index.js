@@ -19,4 +19,12 @@ export const metadata = {
     title: "Logs | E ID Application",
     description: "Blockchain application for Employee and Employer ",
   },
+  Employee: {
+    title: "Employee | E ID Application",
+    description: "Blockchain application for Employee and Employer ",
+  },
+  Employer: {
+    title: "Employer | E ID Application",
+    description: "Blockchain application for Employee and Employer ",
+  },
 };
