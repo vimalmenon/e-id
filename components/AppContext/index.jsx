@@ -18,7 +18,33 @@ export const AppContext = ({ children }) => {
   const [employee, setEmployee] = React.useState();
   const [logs, setLogs] = React.useState([]);
   const logsRef = React.useRef([]);
-
+  const [links, setLinks] = React.useState([
+    {
+      label: "Home",
+      link: "/",
+      show: true,
+    },
+    {
+      label: "Company",
+      link: "/company",
+      show: false,
+    },
+    {
+      label: "Employee",
+      link: "employee",
+      show: false,
+    },
+    {
+      label: "Search",
+      link: "/search",
+      show: true,
+    },
+    {
+      label: "Logs",
+      link: "/logs",
+      show: true,
+    },
+  ]);
   React.useEffect(() => {
     if (contract) {
       contract.on("AddEvent", (createdBy, createdAddress, msg) => {
@@ -31,7 +57,9 @@ export const AppContext = ({ children }) => {
     }
   }, [contract]);
   setInterval(() => {
-    setLogs(logsRef.current);
+    if (logsRef.current.length !== logs.length) {
+      setLogs(logsRef.current);
+    }
   }, 1000);
   React.useEffect(() => {
     if (typeof window.ethereum !== undefined) {
@@ -61,6 +89,20 @@ export const AppContext = ({ children }) => {
       });
     }
   }, [contract, signer, isLoggedIn]);
+  React.useEffect(() => {
+    if (employer) {
+      const newLinks = [...links];
+      newLinks[1].show = true;
+      setLinks(newLinks);
+    }
+  }, [employer]);
+  React.useEffect(() => {
+    if (employee) {
+      const newLinks = [...links];
+      newLinks[2].show = true;
+      setLinks(newLinks);
+    }
+  }, [employee]);
   return (
     <Context.Provider
       value={{
@@ -76,6 +118,7 @@ export const AppContext = ({ children }) => {
         employer,
         address,
         signer,
+        links,
         logs,
       }}
     >

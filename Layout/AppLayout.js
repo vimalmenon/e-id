@@ -7,12 +7,11 @@ import Typography from "@mui/material/Typography";
 import Button from "@mui/material/Button";
 import { useRouter } from "next/router";
 import { blue } from "@mui/material/colors";
-
-import { links } from "../data";
+import { useContext } from "../components";
 
 export const AppLayout = ({ children, metadata }) => {
   const { push } = useRouter();
-
+  const { links } = useContext();
   return (
     <Box
       component={"section"}
@@ -52,15 +51,17 @@ export const AppLayout = ({ children, metadata }) => {
             </Box>
             <Box sx={{ display: "flex", flex: "0 0 auto" }}>
               {links.map((link, key) => {
-                return (
-                  <Button
-                    sx={{ my: 2, color: "white", display: "block" }}
-                    onClick={() => push(link.link)}
-                    key={key}
-                  >
-                    {link.label}
-                  </Button>
-                );
+                if (link.show) {
+                  return (
+                    <Button
+                      sx={{ my: 2, color: "white", display: "block" }}
+                      onClick={() => push(link.link)}
+                      key={key}
+                    >
+                      {link.label}
+                    </Button>
+                  );
+                }
               })}
             </Box>
           </Box>

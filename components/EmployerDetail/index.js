@@ -13,6 +13,7 @@ export const EmployerDetail = () => {
       getEmployerDetail();
     }
   }, [contract, address]);
+  console.log(employer);
   const onClose = () => {
     setOpen(false);
   };

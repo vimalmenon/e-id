@@ -20,31 +20,3 @@ export const metadata = {
     description: "Blockchain application for Employee and Employer ",
   },
 };
-
-export const links = [
-  {
-    label: "Home",
-    link: "/",
-    show: true,
-  },
-  {
-    label: "Company",
-    link: "/company",
-    show: true,
-  },
-  {
-    label: "Employee",
-    link: "employee",
-    show: true,
-  },
-  {
-    label: "Search",
-    link: "/search",
-    show: true,
-  },
-  {
-    label: "Logs",
-    link: "/logs",
-    show: true,
-  },
-];
