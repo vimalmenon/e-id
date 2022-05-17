@@ -1,19 +1,24 @@
 import React from "react";
 import Box from "@mui/material/Box";
+import Button from "@mui/material/Button";
 import { useAppHelper, useContext } from "../";
 import { RegisterDialog } from "../../common";
 
 export const EmployeeDetail = () => {
   const { contract, address, employee } = useContext();
-  const { onEmployerSwitch, getEmployeeDetail } = useAppHelper();
+  const { getEmployeeDetail } = useAppHelper();
+  const [open, setOpen] = React.useState(false);
   React.useEffect(() => {
     if (contract && address) {
       getEmployeeDetail();
     }
   }, [contract, address]);
+  const onClose = () => {
+    setOpen(false);
+  };
   return (
     <Box sx={{ display: "flex", flexDirection: "column", flex: 1, padding: 2 }}>
-      <RegisterDialog open={false} />
+      {open && <RegisterDialog open={open} onClose={onClose} page={1} />}
       <Box
         sx={{
           display: "flex",
@@ -42,9 +47,10 @@ export const EmployeeDetail = () => {
             fontSize: "12px",
             alignItems: "center",
           }}
-          onClick={onEmployerSwitch}
         >
-          Switch as Employer
+          <Button variant="contained" onClick={() => setOpen(true)}>
+            Add Employee
+          </Button>
         </Box>
       </Box>
       {employee && (

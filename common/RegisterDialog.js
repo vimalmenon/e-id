@@ -15,7 +15,7 @@ const Transition = React.forwardRef(function Transition(props, ref) {
 });
 
 const pages = ["Register a company", "Register employee"];
-export const RegisterDialog = ({ open, handleClose, page = 0 }) => {
+export const RegisterDialog = ({ open, onClose, page = 0 }) => {
   const [selectedPage, setSelectedPage] = React.useState(page);
   const [input, setInput] = React.useState({
     id: "",
@@ -31,6 +31,14 @@ export const RegisterDialog = ({ open, handleClose, page = 0 }) => {
   };
   const handleChange = (event, newValue) => {
     setSelectedPage(newValue);
+  };
+  const handleClose = () => {
+    setInput({
+      id: "",
+      name: "",
+      address: "",
+    });
+    onClose();
   };
   return (
     <Dialog
