@@ -7,11 +7,11 @@ import Typography from "@mui/material/Typography";
 import Button from "@mui/material/Button";
 import { useRouter } from "next/router";
 import { blue } from "@mui/material/colors";
-import { useContext } from "../components";
+import { useContext, Metamask, Skeleton } from "../components";
 
 export const AppLayout = ({ children, metadata }) => {
   const { push } = useRouter();
-  const { links } = useContext();
+  const { links, address, contract, provider } = useContext();
   return (
     <Box
       component={"section"}
@@ -67,7 +67,20 @@ export const AppLayout = ({ children, metadata }) => {
           </Box>
         </Toolbar>
       </AppBar>
-      <Box sx={{ marginTop: "70px", display: "flex" }}>{children}</Box>
+      {contract && provider ? (
+        <React.Fragment>
+          {address ? (
+            <Box sx={{ marginTop: "70px", display: "flex" }}>{children}</Box>
+          ) : (
+            <Box sx={{ marginTop: "70px", display: "flex" }}>
+              <Metamask />
+            </Box>
+          )}
+        </React.Fragment>
+      ) : (
+        <Skeleton />
+      )}
+
       <Box
         sx={{
           display: "flex",

@@ -45,6 +45,7 @@ export const AppContext = ({ children }) => {
       show: true,
     },
   ]);
+  const [contractDetail, setContractDetail] = React.useState();
   React.useEffect(() => {
     if (contract) {
       contract.on("AddEvent", (createdBy, createdAddress, msg) => {
@@ -103,10 +104,18 @@ export const AppContext = ({ children }) => {
       setLinks(newLinks);
     }
   }, [employee]);
+  React.useEffect(() => {
+    if (provider && contract) {
+      contract.getContractDetail().then((data) => {
+        setContractDetail(data);
+      });
+    }
+  }, [provider, contract]);
   return (
     <Context.Provider
       value={{
         contractAddress,
+        contractDetail,
         signedContact,
         setEmployer,
         setEmployee,

@@ -158,6 +158,13 @@ struct EmployeeDetail {
     bool isHirable;
     address[] payees;
 }
+struct ContractDetail {
+    uint256 employeeCount;
+    uint256 employerCount;
+    string version;
+    uint256 contractBalance;
+    address contractAddress;
+}
 
 contract HiringApplication {
     Employer[] public employerList;
@@ -236,7 +243,7 @@ contract HiringApplication {
         Employee employee = employees[_employeeAddress];
         return EmployeeDetail({id: employee.getId(), name: employee.getName(), employeeAddress: _employeeAddress, isHirable: employee.getIsHirable(), payees: employee.getPayee()});
     }
-    function getVersion() public view returns(string memory) {
-        return version;
-    }
+    function getContractDetail () public view returns (ContractDetail memory) {
+        return ContractDetail({employeeCount: employeeList.length, employerCount:employerList.length, version: version, contractBalance: address(this).balance, contractAddress: address(this)});
+    } 
 }
