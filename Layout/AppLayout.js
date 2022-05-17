@@ -8,6 +8,8 @@ import Button from "@mui/material/Button";
 import { useRouter } from "next/router";
 import { blue } from "@mui/material/colors";
 
+import { links } from "../data";
+
 export const AppLayout = ({ children, metadata }) => {
   const { push } = useRouter();
 
@@ -49,44 +51,17 @@ export const AppLayout = ({ children, metadata }) => {
               </Typography>
             </Box>
             <Box sx={{ display: "flex", flex: "0 0 auto" }}>
-              <Button
-                sx={{ my: 2, color: "white", display: "block" }}
-                onClick={() => push("/employee")}
-              >
-                Employee
-              </Button>
-
-              <Button
-                sx={{ my: 2, color: "white", display: "block" }}
-                onClick={() => push("/register-employee")}
-              >
-                Register Employee
-              </Button>
-              <Button
-                sx={{ my: 2, color: "white", display: "block" }}
-                onClick={() => push("/employer")}
-              >
-                Employer
-              </Button>
-              <Button
-                sx={{ my: 2, color: "white", display: "block" }}
-                onClick={() => push("/register-employer")}
-              >
-                Register Employer
-              </Button>
-
-              <Button
-                sx={{ my: 2, color: "white", display: "block" }}
-                onClick={() => push("/search")}
-              >
-                Search
-              </Button>
-              <Button
-                sx={{ my: 2, color: "white", display: "block" }}
-                onClick={() => push("/logs")}
-              >
-                Logs
-              </Button>
+              {links.map((link, key) => {
+                return (
+                  <Button
+                    sx={{ my: 2, color: "white", display: "block" }}
+                    onClick={() => push(link.link)}
+                    key={key}
+                  >
+                    {link.label}
+                  </Button>
+                );
+              })}
             </Box>
           </Box>
         </Toolbar>

@@ -1,6 +1,7 @@
 import React from "react";
 import Box from "@mui/material/Box";
 import { useAppHelper, useContext } from "../";
+import { RegisterDialog } from "../../common";
 
 export const EmployeeDetail = () => {
   const { contract, address, employee } = useContext();
@@ -12,6 +13,7 @@ export const EmployeeDetail = () => {
   }, [contract, address]);
   return (
     <Box sx={{ display: "flex", flexDirection: "column", flex: 1, padding: 2 }}>
+      <RegisterDialog open={false} />
       <Box
         sx={{
           display: "flex",
