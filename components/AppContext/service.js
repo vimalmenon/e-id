@@ -47,9 +47,7 @@ export const useAppHelper = () => {
     console.log("Account:", await signer.getAddress());
   };
   const getEmployerDetail = async () => {
-    console.log(address);
     contract.getEmployerAddress(address).then((data) => {
-      console.log(data);
       if (!isEmptyContract(data)) {
         contract.getEmployerDetails(data).then((detail) => {
           setEmployer(detail);
