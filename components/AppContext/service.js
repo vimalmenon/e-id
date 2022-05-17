@@ -13,7 +13,6 @@ export const useAppHelper = () => {
   const {
     contract,
     isLoggedIn,
-    setLogin,
     provider,
     setEmployer,
     address,
@@ -41,12 +40,6 @@ export const useAppHelper = () => {
         });
       }
     }
-  };
-  const onEmployeeSwitch = () => {
-    setLogin(0);
-  };
-  const onEmployerSwitch = () => {
-    setLogin(1);
   };
   const metamaskLogin = async () => {
     await provider.send("eth_requestAccounts");
@@ -76,8 +69,6 @@ export const useAppHelper = () => {
     onEmployeeRegister,
     getEmployeeDetail,
     getEmployerDetail,
-    onEmployeeSwitch,
-    onEmployerSwitch,
     metamaskLogin,
   };
 };

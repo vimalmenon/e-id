@@ -23,6 +23,11 @@ export const metadata = {
 
 export const links = [
   {
+    label: "Home",
+    link: "/",
+    show: true,
+  },
+  {
     label: "Company",
     link: "/company",
     show: true,

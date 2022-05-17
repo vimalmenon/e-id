@@ -13,7 +13,6 @@ export const AppContext = ({ children }) => {
   const [signer, setSigner] = React.useState();
   const [isLoggedIn, setIsLoggedIn] = React.useState(false);
   const [address, setAddress] = React.useState();
-  const [login, setLogin] = React.useState(0);
   const [accounts, setAccounts] = React.useState([]);
   const [employer, setEmployer] = React.useState();
   const [employee, setEmployee] = React.useState();
@@ -71,14 +70,12 @@ export const AppContext = ({ children }) => {
         setEmployee,
         isLoggedIn,
         contract,
-        setLogin,
         accounts,
         provider,
         employee,
         employer,
         address,
         signer,
-        login,
         logs,
       }}
     >
