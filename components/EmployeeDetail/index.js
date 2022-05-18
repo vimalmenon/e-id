@@ -4,14 +4,12 @@ import { useAppHelper, useContext } from "../";
 import { RegisterDialog } from "../../common";
 
 import Card from "@mui/material/Card";
-import CardActions from "@mui/material/CardActions";
 import CardContent from "@mui/material/CardContent";
 import CardHeader from "@mui/material/CardHeader";
-import CardMedia from "@mui/material/CardMedia";
-import Typography from "@mui/material/Typography";
 import { QRCodeCanvas } from "qrcode.react";
 import IconButton from "@mui/material/IconButton";
 import CircleIcon from "@mui/icons-material/Circle";
+import Tooltip from "@mui/material/Tooltip";
 
 export const EmployeeDetail = () => {
   const { contract, address, employee } = useContext();
@@ -66,7 +64,11 @@ export const EmployeeDetail = () => {
               subheader={employee.id}
               action={
                 <IconButton aria-label="settings">
-                  <CircleIcon sx={{ color: "green" }} />
+                  <Tooltip title={employee.isHirable ? "Available" : "Working"}>
+                    <CircleIcon
+                      sx={{ color: employee.isHirable ? "green" : "orange" }}
+                    />
+                  </Tooltip>
                 </IconButton>
               }
             />
@@ -81,11 +83,7 @@ export const EmployeeDetail = () => {
                 <QRCodeCanvas
                   value="0x6DDFF2dF38D87DC8CCDfCFCDFDb3608bc296eD60"
                   size={500}
-                  imageSettings={{
-                    width: "500",
-                    height: "300",
-                  }}
-                  style={{ width: "250px", height: "230px" }}
+                  style={{ width: "210px", height: "230px" }}
                 />
               </Box>
               <Box sx={{ flex: 2, display: "flex", justifyContent: "center" }}>
@@ -93,25 +91,6 @@ export const EmployeeDetail = () => {
               </Box>
             </CardContent>
           </Card>
-          <Box sx={{ display: "flex" }}>
-            <Box sx={{ flex: 1 }}>Property</Box>
-            <Box sx={{ flex: 2 }}>Value</Box>
-          </Box>
-          <Box sx={{ display: "flex" }}>
-            <Box sx={{ flex: 1 }}>Employee Address</Box>
-          </Box>
-          <Box sx={{ display: "flex" }}>
-            <Box sx={{ flex: 1 }}>ID</Box>
-            <Box sx={{ flex: 2 }}></Box>
-          </Box>
-          <Box sx={{ display: "flex" }}>
-            <Box sx={{ flex: 1 }}>Name</Box>
-            <Box sx={{ flex: 2 }}></Box>
-          </Box>
-          <Box sx={{ display: "flex" }}>
-            <Box sx={{ flex: 1 }}>Is Hirable</Box>
-            <Box sx={{ flex: 2 }}>{employee.isHirable ? "True" : "False"}</Box>
-          </Box>
         </Box>
       )}
     </Box>

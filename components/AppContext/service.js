@@ -11,13 +11,13 @@ export const useContext = () => React.useContext(Context);
 
 export const useAppHelper = () => {
   const {
-    contract,
-    isLoggedIn,
-    provider,
-    setEmployer,
-    address,
     signedContact,
     setEmployee,
+    setEmployer,
+    isLoggedIn,
+    contract,
+    provider,
+    address,
   } = useContext();
   const onEmployerRegister = (id, name) => {
     if (id && name && contract && isLoggedIn) {

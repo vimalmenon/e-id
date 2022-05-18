@@ -8,8 +8,12 @@ import { RegisterDialog } from "../../common";
 export const Home = () => {
   const { contract, address, employee, employer, contractDetail } =
     useContext();
-  const { getEmployeeDetail, getEmployerDetail, onEmployeeRegister } =
-    useAppHelper();
+  const {
+    getEmployeeDetail,
+    getEmployerDetail,
+    onEmployeeRegister,
+    onEmployerRegister,
+  } = useAppHelper();
   const [page, setPage] = React.useState(0);
   const [open, setOpen] = React.useState(false);
   React.useEffect(() => {
@@ -32,6 +36,8 @@ export const Home = () => {
   const onSave = (value) => {
     if (page === 1) {
       onEmployeeRegister(value.id, value.name, value.address);
+    } else {
+      onEmployerRegister(value.id, value.name);
     }
   };
   return (
