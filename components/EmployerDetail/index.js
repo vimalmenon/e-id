@@ -3,6 +3,11 @@ import Box from "@mui/material/Box";
 import { useAppHelper, useContext } from "../";
 import { RegisterDialog } from "../../common";
 
+import Card from "@mui/material/Card";
+import CardContent from "@mui/material/CardContent";
+import CardHeader from "@mui/material/CardHeader";
+import { QRCodeCanvas } from "qrcode.react";
+
 export const EmployerDetail = () => {
   const { onEmployeeSwitch } = useAppHelper();
   const { employer } = useContext();
@@ -45,27 +50,28 @@ export const EmployerDetail = () => {
         ></Box>
       </Box>
       {employer && (
-        <Box sx={{ display: "flex", flexDirection: "column", gap: "5px" }}>
-          <Box sx={{ display: "flex" }}>
-            <Box sx={{ flex: 1 }}>Property</Box>
-            <Box sx={{ flex: 2 }}>Value</Box>
-          </Box>
-          <Box sx={{ display: "flex" }}>
-            <Box sx={{ flex: 1 }}>Employer Address</Box>
-            <Box sx={{ flex: 2 }}>{employer.employerAddress}</Box>
-          </Box>
-          <Box sx={{ display: "flex" }}>
-            <Box sx={{ flex: 1 }}>ID</Box>
-            <Box sx={{ flex: 2 }}>{employer.id}</Box>
-          </Box>
-          <Box sx={{ display: "flex" }}>
-            <Box sx={{ flex: 1 }}>Name</Box>
-            <Box sx={{ flex: 2 }}>{employer.name}</Box>
-          </Box>
-          <Box sx={{ display: "flex" }}>
-            <Box sx={{ flex: 1 }}>Employee Count</Box>
-            <Box sx={{ flex: 2 }}>{employer.employeeCount?.toNumber()}</Box>
-          </Box>
+        <Box sx={{ display: "flex", flexDirection: "column", gap: "2px" }}>
+          <Card sx={{ maxWidth: 500 }}>
+            <CardHeader title={employer.name} subheader={employer.id} />
+            <CardContent>
+              <Box
+                sx={{
+                  display: "flex",
+                  justifyContent: "center",
+                  marginBottom: 3,
+                }}
+              >
+                <QRCodeCanvas
+                  value={employer.employerAddress}
+                  size={500}
+                  style={{ width: "210px", height: "230px" }}
+                />
+              </Box>
+              <Box sx={{ flex: 2, display: "flex", justifyContent: "center" }}>
+                {employer.employerAddress}
+              </Box>
+            </CardContent>
+          </Card>
         </Box>
       )}
     </Box>

@@ -41,14 +41,6 @@ export const EmployeeDetail = () => {
         >
           Employee Detail
         </Box>
-        <Box
-          component={"span"}
-          sx={{
-            display: "flex",
-            fontSize: "12px",
-            alignItems: "center",
-          }}
-        ></Box>
       </Box>
       {employee && (
         <Box sx={{ display: "flex", flexDirection: "column", gap: "2px" }}>
@@ -75,7 +67,7 @@ export const EmployeeDetail = () => {
                 }}
               >
                 <QRCodeCanvas
-                  value="0x6DDFF2dF38D87DC8CCDfCFCDFDb3608bc296eD60"
+                  value={employee.employeeAddress}
                   size={500}
                   style={{ width: "210px", height: "230px" }}
                 />
