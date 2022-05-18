@@ -1,5 +1,4 @@
 import React from "react";
-import { isEmptyContract } from "../../utility";
 
 export const contractAddress = "0xf5059a5D33d5853360D16C683c16e67980206f36";
 
@@ -10,15 +9,7 @@ export const Context = React.createContext({
 export const useContext = () => React.useContext(Context);
 
 export const useAppHelper = () => {
-  const {
-    signedContact,
-    setEmployee,
-    setEmployer,
-    isLoggedIn,
-    contract,
-    provider,
-    address,
-  } = useContext();
+  const { signedContact, isLoggedIn, contract, provider } = useContext();
   const onEmployerRegister = (id, name) => {
     if (id && name && contract && isLoggedIn) {
       signedContact.registerEmployer(id, name).then((result) => {
@@ -46,29 +37,9 @@ export const useAppHelper = () => {
     const signer = provider.getSigner();
     console.log("Account:", await signer.getAddress());
   };
-  const getEmployerDetail = async () => {
-    contract.getEmployerAddress(address).then((data) => {
-      if (!isEmptyContract(data)) {
-        contract.getEmployerDetails(data).then((detail) => {
-          setEmployer(detail);
-        });
-      }
-    });
-  };
-  const getEmployeeDetail = async () => {
-    contract.getEmployeeAddress(address).then((data) => {
-      if (!isEmptyContract(data)) {
-        contract.getEmployeeDetails(data).then((detail) => {
-          setEmployee(detail);
-        });
-      }
-    });
-  };
   return {
     onEmployerRegister,
     onEmployeeRegister,
-    getEmployeeDetail,
-    getEmployerDetail,
     metamaskLogin,
   };
 };

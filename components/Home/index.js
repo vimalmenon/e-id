@@ -6,22 +6,10 @@ import Button from "@mui/material/Button";
 import { RegisterDialog } from "../../common";
 
 export const Home = () => {
-  const { contract, address, employee, employer, contractDetail } =
-    useContext();
-  const {
-    getEmployeeDetail,
-    getEmployerDetail,
-    onEmployeeRegister,
-    onEmployerRegister,
-  } = useAppHelper();
+  const { employee, employer, contractDetail } = useContext();
+  const { onEmployeeRegister, onEmployerRegister } = useAppHelper();
   const [page, setPage] = React.useState(0);
   const [open, setOpen] = React.useState(false);
-  React.useEffect(() => {
-    if (contract && address) {
-      getEmployeeDetail();
-      getEmployerDetail();
-    }
-  }, [contract, address]);
   const onEnrollEmployee = () => {
     setPage(1);
     setOpen(true);

@@ -1,6 +1,6 @@
 import React from "react";
 import Box from "@mui/material/Box";
-import { useAppHelper, useContext } from "../";
+import { useContext } from "../";
 import { RegisterDialog } from "../../common";
 
 import Card from "@mui/material/Card";
@@ -12,14 +12,8 @@ import CircleIcon from "@mui/icons-material/Circle";
 import Tooltip from "@mui/material/Tooltip";
 
 export const EmployeeDetail = () => {
-  const { contract, address, employee } = useContext();
-  const { getEmployeeDetail } = useAppHelper();
+  const { employee } = useContext();
   const [open, setOpen] = React.useState(false);
-  React.useEffect(() => {
-    if (contract && address) {
-      getEmployeeDetail();
-    }
-  }, [contract, address]);
   const onClose = () => {
     setOpen(false);
   };

@@ -4,14 +4,9 @@ import { useAppHelper, useContext } from "../";
 import { RegisterDialog } from "../../common";
 
 export const EmployerDetail = () => {
-  const { getEmployerDetail, onEmployeeSwitch } = useAppHelper();
-  const { employer, contract, address } = useContext();
+  const { onEmployeeSwitch } = useAppHelper();
+  const { employer } = useContext();
   const [open, setOpen] = React.useState(false);
-  React.useEffect(() => {
-    if (contract && address) {
-      getEmployerDetail();
-    }
-  }, [contract, address]);
   const onClose = () => {
     setOpen(false);
   };

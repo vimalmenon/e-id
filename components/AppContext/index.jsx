@@ -1,6 +1,8 @@
 import React from "react";
 import { ethers } from "ethers";
 
+import { isEmptyContract } from "../../utility";
+
 import { Context, contractAddress } from "./service";
 import HiringApplication from "../../src/artifacts/contracts/HiringApplication.sol/HiringApplication.json";
 
@@ -111,14 +113,30 @@ export const AppContext = ({ children }) => {
       });
     }
   }, [provider, contract]);
+  React.useEffect(() => {
+    if (contract && address) {
+      contract.getEmployerAddress(address).then((data) => {
+        if (!isEmptyContract(data)) {
+          contract.getEmployerDetails(data).then((detail) => {
+            setEmployer(detail);
+          });
+        }
+      });
+      contract.getEmployeeAddress(address).then((data) => {
+        if (!isEmptyContract(data)) {
+          contract.getEmployeeDetails(data).then((detail) => {
+            setEmployee(detail);
+          });
+        }
+      });
+    }
+  }, [contract, address]);
   return (
     <Context.Provider
       value={{
         contractAddress,
         contractDetail,
         signedContact,
-        setEmployer,
-        setEmployee,
         isLoggedIn,
         contract,
         accounts,
