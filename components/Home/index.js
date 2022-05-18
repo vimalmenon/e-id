@@ -6,7 +6,7 @@ import Button from "@mui/material/Button";
 import { RegisterDialog } from "../../common";
 
 export const Home = () => {
-  const { employee, employer, contractDetail } = useContext();
+  const { contractDetail } = useContext();
   const { onEmployeeRegister, onEmployerRegister } = useAppHelper();
   const [page, setPage] = React.useState(0);
   const [open, setOpen] = React.useState(false);
@@ -39,10 +39,6 @@ export const Home = () => {
         />
       )}
       <Box sx={{ display: "flex", flexDirection: "column" }}>
-        <Box sx={{ display: "flex", marginY: 1 }}>
-          {employee && <span>You are registered as Employee</span>}
-          {employer && <span>You are registered as Company</span>}
-        </Box>
         <Box sx={{ display: "flex", marginY: 1 }}>
           <Button variant="contained" onClick={onRegisterCompany}>
             Register a company
