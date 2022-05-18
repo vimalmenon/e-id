@@ -6,8 +6,10 @@ import Button from "@mui/material/Button";
 import { RegisterDialog } from "../../common";
 
 export const Home = () => {
-  const { contract, address, employee, employer } = useContext();
-  const { getEmployeeDetail, getEmployerDetail } = useAppHelper();
+  const { contract, address, employee, employer, contractDetail } =
+    useContext();
+  const { getEmployeeDetail, getEmployerDetail, onEmployeeRegister } =
+    useAppHelper();
   const [page, setPage] = React.useState(0);
   const [open, setOpen] = React.useState(false);
   React.useEffect(() => {
@@ -27,13 +29,25 @@ export const Home = () => {
   const onClose = () => {
     setOpen(false);
   };
+  const onSave = (value) => {
+    if (page === 1) {
+      onEmployeeRegister(value.id, value.name, value.address);
+    }
+  };
   return (
     <Box sx={{ display: "flex", flexDirection: "column", flex: 1, padding: 2 }}>
-      {open && <RegisterDialog open={open} onClose={onClose} page={page} />}
+      {open && (
+        <RegisterDialog
+          open={open}
+          onClose={onClose}
+          page={page}
+          onSave={onSave}
+        />
+      )}
       <Box sx={{ display: "flex", flexDirection: "column" }}>
         <Box sx={{ display: "flex", marginY: 1 }}>
-          You are registered as : {employee && <span>Employee</span>}
-          {employer && <span>Company</span>}
+          {employee && <span>You are registered as Employee</span>}
+          {employer && <span>You are registered as Company</span>}
         </Box>
         <Box sx={{ display: "flex", marginY: 1 }}>
           <Button variant="contained" onClick={onRegisterCompany}>
@@ -45,6 +59,40 @@ export const Home = () => {
             Enroll a employee
           </Button>
         </Box>
+        {contractDetail && (
+          <Box sx={{ display: "flex", flexDirection: "column", marginY: 1 }}>
+            <Box sx={{ display: "flex", marginY: 1 }}>
+              <Box sx={{ display: "flex", flex: 1 }}>Contract Address</Box>
+              <Box sx={{ display: "flex", flex: 2 }}>
+                {contractDetail.contractAddress}
+              </Box>
+            </Box>
+            <Box sx={{ display: "flex", marginY: 1 }}>
+              <Box sx={{ display: "flex", flex: 1 }}>Enrolled Employee</Box>
+              <Box sx={{ display: "flex", flex: 2 }}>
+                {contractDetail.employeeCount.toNumber()}
+              </Box>
+            </Box>
+            <Box sx={{ display: "flex", marginY: 1 }}>
+              <Box sx={{ display: "flex", flex: 1 }}>Registered Company</Box>
+              <Box sx={{ display: "flex", flex: 2 }}>
+                {contractDetail.employerCount.toNumber()}
+              </Box>
+            </Box>
+            <Box sx={{ display: "flex", marginY: 1 }}>
+              <Box sx={{ display: "flex", flex: 1 }}>Version</Box>
+              <Box sx={{ display: "flex", flex: 2 }}>
+                {contractDetail.version}
+              </Box>
+            </Box>
+            <Box sx={{ display: "flex", marginY: 1 }}>
+              <Box sx={{ display: "flex", flex: 1 }}>Contract Balance</Box>
+              <Box sx={{ display: "flex", flex: 2 }}>
+                {contractDetail.contractBalance.toNumber()}
+              </Box>
+            </Box>
+          </Box>
+        )}
       </Box>
     </Box>
   );

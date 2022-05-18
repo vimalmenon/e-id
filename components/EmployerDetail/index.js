@@ -2,7 +2,6 @@ import React from "react";
 import Box from "@mui/material/Box";
 import { useAppHelper, useContext } from "../";
 import { RegisterDialog } from "../../common";
-import Button from "@mui/material/Button";
 
 export const EmployerDetail = () => {
   const { getEmployerDetail, onEmployeeSwitch } = useAppHelper();
@@ -13,7 +12,6 @@ export const EmployerDetail = () => {
       getEmployerDetail();
     }
   }, [contract, address]);
-  console.log(employer);
   const onClose = () => {
     setOpen(false);
   };
@@ -49,11 +47,7 @@ export const EmployerDetail = () => {
             alignItems: "center",
           }}
           onClick={onEmployeeSwitch}
-        >
-          <Button variant="contained" onClick={() => setOpen(true)}>
-            Add a company
-          </Button>
-        </Box>
+        ></Box>
       </Box>
       {employer && (
         <Box sx={{ display: "flex", flexDirection: "column", gap: "5px" }}>
