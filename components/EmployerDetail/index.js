@@ -19,8 +19,6 @@ import Paper from "@mui/material/Paper";
 import Button from "@mui/material/Button";
 import TextField from "@mui/material/TextField";
 
-import { ethers } from "ethers";
-
 export const EmployerDetail = () => {
   const { employer, signedContact } = useContext();
   const [open, setOpen] = React.useState(false);

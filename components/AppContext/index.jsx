@@ -4,6 +4,7 @@ import { ethers } from "ethers";
 import { isEmptyContract } from "../../utility";
 
 import { Context, contractAddress } from "./service";
+
 import HiringApplication from "../../src/artifacts/contracts/HiringApplication.sol/HiringApplication.json";
 
 export { useContext, useAppHelper } from "./service";
