@@ -2,17 +2,7 @@
 pragma solidity ^0.8.0;
 
 import "hardhat/console.sol";
-enum HiringType {
-    RECRUIT,
-    RESIGN
-}
-
-struct EmployementHistory {
-    address employer;
-    string position;
-    HiringType hiringType;
-    uint256 timestamp;
-}
+import "./Employee.sol";
 
 struct EmployerDetail {
     string id;
@@ -26,9 +16,9 @@ struct EmployerDetail {
 struct EmployeeDetail {
     string id;
     string name;
-    address employeeAddress;
     bool isHirable;
     address[] payees;
+    string position;
     EmployementHistory[] employementHistory;
 }
 
@@ -37,100 +27,6 @@ struct ContractDetail {
     uint256 employerCount;
     uint256 contractBalance;
     address contractAddress;
-}
-
-contract Employee {
-    EmployementHistory[] private employementHistory;
-    string private id;
-    string private name;
-    bool private isHirable;
-    address[] private payees;
-
-    constructor(string memory _id, string memory _name) {
-        id = _id;
-        name = _name;
-        isHirable = true;
-    }
-
-    modifier hasEmployee() {
-        require(employementHistory.length > 0, "Employee has no employer");
-        _;
-    }
-    modifier canHire() {
-        require(isHirable == true, "Employee cannot be hired");
-        _;
-    }
-
-    function recruit(address employeeAddress, string memory position)
-        public
-        canHire
-    {
-        employementHistory.push(
-            EmployementHistory({
-                employer: employeeAddress,
-                position: position,
-                hiringType: HiringType.RECRUIT,
-                timestamp: block.timestamp
-            })
-        );
-        isHirable = false;
-    }
-
-    function relieve(address employeeAddress) public hasEmployee {
-        require(
-            employementHistory[employementHistory.length - 1].employer ==
-                employeeAddress,
-            "Operation not allowed"
-        );
-        employementHistory.push(
-            EmployementHistory({
-                employer: employeeAddress,
-                position: employementHistory[employementHistory.length - 1]
-                    .position,
-                hiringType: HiringType.RESIGN,
-                timestamp: block.timestamp
-            })
-        );
-        isHirable = true;
-    }
-
-    function getId() public view returns (string memory) {
-        return id;
-    }
-
-    function getName() public view returns (string memory) {
-        return name;
-    }
-
-    function getPayee() public view returns (address[] memory) {
-        return payees;
-    }
-
-    function getIsHirable() public view returns (bool) {
-        return isHirable;
-    }
-
-    function getEmployementHistory()
-        public
-        view
-        returns (EmployementHistory[] memory)
-    {
-        return employementHistory;
-    }
-
-    function validatePayee(address payee) public view returns (bool) {
-        bool isAvailable = false;
-        for (uint256 index = 0; index < payees.length; index++) {
-            if (payees[index] == payee) {
-                isAvailable = true;
-            }
-        }
-        return isAvailable;
-    }
-
-    function addPayee(address payee) public {
-        payees.push(payee);
-    }
 }
 
 contract Employer {
@@ -290,7 +186,6 @@ contract HiringApplication {
             employers[employerAddress].validatePayee(msg.sender),
             "Not authorized"
         );
-        console.log("this is called");
         employers[employerAddress].recruitEmployee(
             employees[employeeAddress],
             position
@@ -362,20 +257,20 @@ contract HiringApplication {
             EmployeeDetail({
                 id: employee.getId(),
                 name: employee.getName(),
-                employeeAddress: _employeeAddress,
                 isHirable: employee.getIsHirable(),
                 payees: employee.getPayee(),
-                employementHistory: employee.getEmployementHistory()
+                employementHistory: employee.getEmployementHistory(),
+                position: employee.getPosition()
             });
     }
 
-    function getContractDetail() public view returns (ContractDetail memory) {
-        return
-            ContractDetail({
-                employeeCount: employeeList.length,
-                employerCount: employerList.length,
-                contractBalance: address(this).balance,
-                contractAddress: address(this)
-            });
-    }
+    // function getContractDetail() public view returns (ContractDetail memory) {
+    //     return
+    //         ContractDetail({
+    //             employeeCount: employeeList.length,
+    //             employerCount: employerList.length,
+    //             contractBalance: address(this).balance,
+    //             contractAddress: address(this)
+    //         });
+    // }
 }

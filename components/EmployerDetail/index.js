@@ -1,7 +1,7 @@
 import React from "react";
 import Box from "@mui/material/Box";
 import { useAppHelper, useContext } from "../";
-import { RegisterDialog } from "../../common";
+import { RegisterDialog, EmployerTableCell } from "../../common";
 
 import Card from "@mui/material/Card";
 import CardContent from "@mui/material/CardContent";
@@ -74,9 +74,9 @@ export const EmployerDetail = () => {
           </Button>
         </Box>
       </Box>
-      <Grid container spacing={2}>
-        <Grid item xs={3}>
-          {employer && (
+      {employer && (
+        <Grid container spacing={2}>
+          <Grid item xs={3}>
             <Box sx={{ display: "flex", flexDirection: "column", gap: "2px" }}>
               <Card>
                 <CardHeader title={employer.name} subheader={employer.id} />
@@ -102,47 +102,53 @@ export const EmployerDetail = () => {
                 </CardContent>
               </Card>
             </Box>
-          )}
-        </Grid>
-        <Grid item xs={9}>
-          <Box sx={{ display: "flex", flexDirection: "column", gap: "2px" }}>
-            {!enroll ? (
-              <Box sx={{ display: "flex" }}>
-                <TableContainer component={Paper}>
-                  <Table>
-                    <TableHead>
-                      <TableRow>
-                        <TableCell>Dessert (100g serving)</TableCell>
-                        <TableCell align="right">Calories</TableCell>
-                        <TableCell align="right">Fat&nbsp;(g)</TableCell>
-                        <TableCell align="right">Carbs&nbsp;(g)</TableCell>
-                        <TableCell align="right">Protein&nbsp;(g)</TableCell>
-                      </TableRow>
-                    </TableHead>
-                  </Table>
-                </TableContainer>
-              </Box>
-            ) : (
-              <Box sx={{ display: "flex", flex: 1 }}>
+          </Grid>
+          <Grid item xs={9}>
+            <Box sx={{ display: "flex", flexDirection: "column", gap: "2px" }}>
+              {!enroll ? (
+                <Box sx={{ display: "flex" }}>
+                  <TableContainer component={Paper}>
+                    <Table>
+                      <TableHead>
+                        <TableRow>
+                          <TableCell>ID</TableCell>
+                          <TableCell>Name</TableCell>
+                          <TableCell>Address</TableCell>
+                          <TableCell align="right">Action</TableCell>
+                        </TableRow>
+                      </TableHead>
+                      <TableBody>
+                        {employer.employees.map((employee, key) => {
+                          return (
+                            <EmployerTableCell employee={employee} key={key} />
+                          );
+                        })}
+                      </TableBody>
+                    </Table>
+                  </TableContainer>
+                </Box>
+              ) : (
                 <Box sx={{ display: "flex", flex: 1 }}>
-                  <TextField
-                    label="Employee address"
-                    size="small"
-                    fullWidth
-                    value={employeeAddress}
-                    onChange={onChange}
-                  />
+                  <Box sx={{ display: "flex", flex: 1 }}>
+                    <TextField
+                      label="Employee address"
+                      size="small"
+                      fullWidth
+                      value={employeeAddress}
+                      onChange={onChange}
+                    />
+                  </Box>
+                  <Box sx={{ display: "flex", flex: "0 0 50px" }}>
+                    <Button variant="contained" onClick={onEnroll}>
+                      Search
+                    </Button>
+                  </Box>
                 </Box>
-                <Box sx={{ display: "flex", flex: "0 0 50px" }}>
-                  <Button variant="contained" onClick={onEnroll}>
-                    Search
-                  </Button>
-                </Box>
-              </Box>
-            )}
-          </Box>
+              )}
+            </Box>
+          </Grid>
         </Grid>
-      </Grid>
+      )}
     </Box>
   );
 };

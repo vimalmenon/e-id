@@ -1,6 +1,5 @@
 import TableCell from "@mui/material/TableCell";
 import TableRow from "@mui/material/TableRow";
-import FileDownloadIcon from "@mui/icons-material/FileDownload";
 import { useContext } from "../components";
 import React from "react";
 
@@ -21,9 +20,6 @@ export const EmployeeTableCell = ({ employement }) => {
       <TableCell>{employement.position}</TableCell>
       <TableCell>
         {new Date(employement.timestamp.toNumber() * 1000).toDateString()}
-      </TableCell>
-      <TableCell>
-        <FileDownloadIcon />
       </TableCell>
     </TableRow>
   );

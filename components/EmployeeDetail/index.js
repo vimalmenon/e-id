@@ -1,7 +1,7 @@
 import React from "react";
 import Box from "@mui/material/Box";
 import { useContext } from "../";
-import { RegisterDialog , EmployeeTableCell } from "../../common";
+import { RegisterDialog, EmployeeTableCell } from "../../common";
 
 import Card from "@mui/material/Card";
 import CardContent from "@mui/material/CardContent";
@@ -105,7 +105,6 @@ export const EmployeeDetail = () => {
                         <TableCell>Hiring</TableCell>
                         <TableCell>Position</TableCell>
                         <TableCell>Timestamp</TableCell>
-                        <TableCell>Action</TableCell>
                       </TableRow>
                     </TableHead>
                     <TableBody>

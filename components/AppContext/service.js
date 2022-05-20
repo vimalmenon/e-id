@@ -1,6 +1,6 @@
 import React from "react";
 
-export const contractAddress = "0xDc64a140Aa3E981100a9becA4E685f962f0cF6C9";
+export const contractAddress = "0xB7f8BC63BbcaD18155201308C8f3540b07f84F5e";
 
 export const Context = React.createContext({
   contractAddress,
@@ -37,9 +37,13 @@ export const useAppHelper = () => {
     const signer = provider.getSigner();
     console.log("Account:", await signer.getAddress());
   };
+  const onEmployeeResign = async () => {
+    // console.log(signedContact.relieveEmployee())
+  }
   return {
     onEmployerRegister,
     onEmployeeRegister,
+    onEmployeeResign,
     metamaskLogin,
   };
 };

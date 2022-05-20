@@ -110,9 +110,10 @@ export const AppContext = ({ children }) => {
   }, [employee]);
   React.useEffect(() => {
     if (provider && contract) {
-      contract.getContractDetail().then((data) => {
-        setContractDetail(data);
-      });
+      console.log(contract);
+      // contract.getContractDetail().then((data) => {
+      //   setContractDetail(data);
+      // });
     }
   }, [provider, contract]);
   React.useEffect(() => {
