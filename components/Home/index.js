@@ -6,7 +6,7 @@ import Button from "@mui/material/Button";
 import { RegisterDialog } from "../../common";
 
 export const Home = () => {
-  const { contractDetail } = useContext();
+  const { contractDetail, signedContact, contract } = useContext();
   const { onEmployeeRegister, onEmployerRegister } = useAppHelper();
   const [page, setPage] = React.useState(0);
   const [open, setOpen] = React.useState(false);
@@ -28,6 +28,11 @@ export const Home = () => {
       onEmployerRegister(value.id, value.name);
     }
   };
+  const onTest = () => {
+    signedContact.recruitEmployee("0xa16E02E87b7454126E5E10d957A927A7F5B5d2be", "0xB7A5bd0345EF1Cc5E66bf61BdeC17D2461fBd968" , "SSE").then((data) => {
+        console.log(data);
+    })
+  }
   return (
     <Box sx={{ display: "flex", flexDirection: "column", flex: 1, padding: 2 }}>
       {open && (
@@ -48,6 +53,9 @@ export const Home = () => {
           <Button variant="contained" onClick={onEnrollEmployee}>
             Enroll a employee
           </Button>
+          <Button variant="contained" onClick={onTest}>
+            Test
+          </Button>
         </Box>
         {contractDetail && (
           <Box sx={{ display: "flex", flexDirection: "column", marginY: 1 }}>
@@ -67,12 +75,6 @@ export const Home = () => {
               <Box sx={{ display: "flex", flex: 1 }}>Registered Company</Box>
               <Box sx={{ display: "flex", flex: 2 }}>
                 {contractDetail.employerCount.toNumber()}
-              </Box>
-            </Box>
-            <Box sx={{ display: "flex", marginY: 1 }}>
-              <Box sx={{ display: "flex", flex: 1 }}>Version</Box>
-              <Box sx={{ display: "flex", flex: 2 }}>
-                {contractDetail.version}
               </Box>
             </Box>
             <Box sx={{ display: "flex", marginY: 1 }}>

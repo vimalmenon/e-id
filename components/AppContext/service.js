@@ -1,6 +1,6 @@
 import React from "react";
 
-export const contractAddress = "0xf5059a5D33d5853360D16C683c16e67980206f36";
+export const contractAddress = "0xDc64a140Aa3E981100a9becA4E685f962f0cF6C9";
 
 export const Context = React.createContext({
   contractAddress,

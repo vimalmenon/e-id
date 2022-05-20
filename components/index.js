@@ -1,6 +1,5 @@
 export * from "./EmployerDetail";
 export * from "./EmployeeDetail";
-export * from "./EmployeeEnroll";
 export * from "./AppContext";
 export * from "./Metamask";
 export * from "./Skeleton";

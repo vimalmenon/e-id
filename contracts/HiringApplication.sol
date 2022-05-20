@@ -3,19 +3,44 @@ pragma solidity ^0.8.0;
 
 import "hardhat/console.sol";
 enum HiringType {
-    JOIN,
+    RECRUIT,
     RESIGN
 }
 
-struct EmployeeEmployer {
+struct EmployementHistory {
     address employer;
     string position;
     HiringType hiringType;
     uint256 timestamp;
 }
 
+struct EmployerDetail {
+    string id;
+    string name;
+    address employerAddress;
+    uint256 employeeCount;
+    address[] payees;
+    Employee[] employees;
+}
+
+struct EmployeeDetail {
+    string id;
+    string name;
+    address employeeAddress;
+    bool isHirable;
+    address[] payees;
+    EmployementHistory[] employementHistory;
+}
+
+struct ContractDetail {
+    uint256 employeeCount;
+    uint256 employerCount;
+    uint256 contractBalance;
+    address contractAddress;
+}
+
 contract Employee {
-    EmployeeEmployer[] public employees;
+    EmployementHistory[] private employementHistory;
     string private id;
     string private name;
     bool private isHirable;
@@ -28,7 +53,7 @@ contract Employee {
     }
 
     modifier hasEmployee() {
-        require(employees.length > 0, "Employee has no employer");
+        require(employementHistory.length > 0, "Employee has no employer");
         _;
     }
     modifier canHire() {
@@ -40,11 +65,11 @@ contract Employee {
         public
         canHire
     {
-        employees.push(
-            EmployeeEmployer({
+        employementHistory.push(
+            EmployementHistory({
                 employer: employeeAddress,
                 position: position,
-                hiringType: HiringType.JOIN,
+                hiringType: HiringType.RECRUIT,
                 timestamp: block.timestamp
             })
         );
@@ -53,13 +78,15 @@ contract Employee {
 
     function relieve(address employeeAddress) public hasEmployee {
         require(
-            employees[employees.length - 1].employer == employeeAddress,
+            employementHistory[employementHistory.length - 1].employer ==
+                employeeAddress,
             "Operation not allowed"
         );
-        employees.push(
-            EmployeeEmployer({
+        employementHistory.push(
+            EmployementHistory({
                 employer: employeeAddress,
-                position: employees[employees.length - 1].position,
+                position: employementHistory[employementHistory.length - 1]
+                    .position,
                 hiringType: HiringType.RESIGN,
                 timestamp: block.timestamp
             })
@@ -81,6 +108,14 @@ contract Employee {
 
     function getIsHirable() public view returns (bool) {
         return isHirable;
+    }
+
+    function getEmployementHistory()
+        public
+        view
+        returns (EmployementHistory[] memory)
+    {
+        return employementHistory;
     }
 
     function validatePayee(address payee) public view returns (bool) {
@@ -119,14 +154,29 @@ contract Employer {
         payees = [_registeredAddress];
     }
 
+    function removeEmployee(Employee employee) private {
+        bool itemFound = false;
+        for (uint256 i = 0; i < employeeList.length - 1; i++) {
+            if (employeeList[i] != employee) {
+                itemFound = true;
+            } else if (!itemFound) {
+                employeeList[1] = employeeList[i];
+            } else if (itemFound) {
+                employeeList[i - 1] = employeeList[i];
+            }
+        }
+        employeeList.pop();
+    }
+
     function recruitEmployee(Employee employee, string memory position) public {
         employee.recruit(address(this), position);
-        employeeCount += 1;
         employeeList.push(employee);
+        employeeCount += 1;
     }
 
     function relieveEmployee(Employee employee) public {
         employee.relieve(address(this));
+        removeEmployee(employee);
         employeeCount -= 1;
     }
 
@@ -140,6 +190,10 @@ contract Employer {
 
     function getEmployeeCount() public view returns (uint256) {
         return employeeCount;
+    }
+
+    function getEmployees() public view returns (Employee[] memory) {
+        return employeeList;
     }
 
     function validatePayee(address payee) public view returns (bool) {
@@ -161,44 +215,17 @@ contract Employer {
     }
 }
 
-struct EmployerDetail {
-    string id;
-    string name;
-    address employerAddress;
-    uint256 employeeCount;
-    address[] payees;
-}
-
-struct EmployeeDetail {
-    string id;
-    string name;
-    address employeeAddress;
-    bool isHirable;
-    address[] payees;
-}
-struct ContractDetail {
-    uint256 employeeCount;
-    uint256 employerCount;
-    string version;
-    uint256 contractBalance;
-    address contractAddress;
-}
-
 contract HiringApplication {
     Employer[] public employerList;
     Employee[] public employeeList;
     mapping(address => Employer) public employers;
     mapping(address => Employee) public employees;
-    string private version;
+
     event AddEvent(
         address indexed from,
         address indexed createdAddress,
         string msg
     );
-
-    constructor() {
-        version = "v0.0.0";
-    }
 
     function registerEmployer(string memory id, string memory companyName)
         public
@@ -263,6 +290,7 @@ contract HiringApplication {
             employers[employerAddress].validatePayee(msg.sender),
             "Not authorized"
         );
+        console.log("this is called");
         employers[employerAddress].recruitEmployee(
             employees[employeeAddress],
             position
@@ -305,7 +333,8 @@ contract HiringApplication {
                 name: employer.getName(),
                 employerAddress: _empoyerAddress,
                 employeeCount: employer.getEmployeeCount(),
-                payees: employer.getPayees()
+                payees: employer.getPayees(),
+                employees: employer.getEmployees()
             });
     }
 
@@ -335,7 +364,8 @@ contract HiringApplication {
                 name: employee.getName(),
                 employeeAddress: _employeeAddress,
                 isHirable: employee.getIsHirable(),
-                payees: employee.getPayee()
+                payees: employee.getPayee(),
+                employementHistory: employee.getEmployementHistory()
             });
     }
 
@@ -344,7 +374,6 @@ contract HiringApplication {
             ContractDetail({
                 employeeCount: employeeList.length,
                 employerCount: employerList.length,
-                version: version,
                 contractBalance: address(this).balance,
                 contractAddress: address(this)
             });

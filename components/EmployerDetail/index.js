@@ -6,14 +6,38 @@ import { RegisterDialog } from "../../common";
 import Card from "@mui/material/Card";
 import CardContent from "@mui/material/CardContent";
 import CardHeader from "@mui/material/CardHeader";
+import Grid from "@mui/material/Grid";
 import { QRCodeCanvas } from "qrcode.react";
 
+import Table from "@mui/material/Table";
+import TableBody from "@mui/material/TableBody";
+import TableCell from "@mui/material/TableCell";
+import TableContainer from "@mui/material/TableContainer";
+import TableHead from "@mui/material/TableHead";
+import TableRow from "@mui/material/TableRow";
+import Paper from "@mui/material/Paper";
+import Button from "@mui/material/Button";
+import TextField from "@mui/material/TextField";
+
+import { ethers } from "ethers";
+
 export const EmployerDetail = () => {
-  const { onEmployeeSwitch } = useAppHelper();
-  const { employer } = useContext();
+  const { employer, signedContact } = useContext();
   const [open, setOpen] = React.useState(false);
+  const [enroll, setEnroll] = React.useState(false);
+  const [employeeAddress, setEmployeeAddress] = React.useState("");
   const onClose = () => {
     setOpen(false);
+  };
+  const onChange = (e) => {
+    setEmployeeAddress(e.target.value);
+  };
+  const onEnroll = () => {
+    signedContact.recruitEmployee(
+      employer.employerAddress,
+      employeeAddress,
+      "Senior Software Engineer"
+    );
   };
   return (
     <Box sx={{ display: "flex", flexDirection: "column", flex: 1, padding: 2 }}>
@@ -46,34 +70,81 @@ export const EmployerDetail = () => {
             fontSize: "12px",
             alignItems: "center",
           }}
-          onClick={onEmployeeSwitch}
-        ></Box>
-      </Box>
-      {employer && (
-        <Box sx={{ display: "flex", flexDirection: "column", gap: "2px" }}>
-          <Card sx={{ maxWidth: 500 }}>
-            <CardHeader title={employer.name} subheader={employer.id} />
-            <CardContent>
-              <Box
-                sx={{
-                  display: "flex",
-                  justifyContent: "center",
-                  marginBottom: 3,
-                }}
-              >
-                <QRCodeCanvas
-                  value={employer.employerAddress}
-                  size={500}
-                  style={{ width: "210px", height: "230px" }}
-                />
-              </Box>
-              <Box sx={{ flex: 2, display: "flex", justifyContent: "center" }}>
-                {employer.employerAddress}
-              </Box>
-            </CardContent>
-          </Card>
+        >
+          <Button variant="contained" onClick={() => setEnroll(!enroll)}>
+            {!enroll ? "Enroll Employee" : "Show Employees"}
+          </Button>
         </Box>
-      )}
+      </Box>
+      <Grid container spacing={2}>
+        <Grid item xs={3}>
+          {employer && (
+            <Box sx={{ display: "flex", flexDirection: "column", gap: "2px" }}>
+              <Card>
+                <CardHeader title={employer.name} subheader={employer.id} />
+                <CardContent>
+                  <Box
+                    sx={{
+                      display: "flex",
+                      justifyContent: "center",
+                      marginBottom: 3,
+                    }}
+                  >
+                    <QRCodeCanvas
+                      value={employer.employerAddress}
+                      size={500}
+                      style={{ width: "210px", height: "230px" }}
+                    />
+                  </Box>
+                  <Box
+                    sx={{ flex: 2, display: "flex", justifyContent: "center" }}
+                  >
+                    {employer.employerAddress}
+                  </Box>
+                </CardContent>
+              </Card>
+            </Box>
+          )}
+        </Grid>
+        <Grid item xs={9}>
+          <Box sx={{ display: "flex", flexDirection: "column", gap: "2px" }}>
+            {!enroll ? (
+              <Box sx={{ display: "flex" }}>
+                <TableContainer component={Paper}>
+                  <Table>
+                    <TableHead>
+                      <TableRow>
+                        <TableCell>Dessert (100g serving)</TableCell>
+                        <TableCell align="right">Calories</TableCell>
+                        <TableCell align="right">Fat&nbsp;(g)</TableCell>
+                        <TableCell align="right">Carbs&nbsp;(g)</TableCell>
+                        <TableCell align="right">Protein&nbsp;(g)</TableCell>
+                      </TableRow>
+                    </TableHead>
+                  </Table>
+                </TableContainer>
+              </Box>
+            ) : (
+              <Box sx={{ display: "flex", flex: 1 }}>
+                <Box sx={{ display: "flex", flex: 1 }}>
+                  <TextField
+                    label="Employee address"
+                    size="small"
+                    fullWidth
+                    value={employeeAddress}
+                    onChange={onChange}
+                  />
+                </Box>
+                <Box sx={{ display: "flex", flex: "0 0 50px" }}>
+                  <Button variant="contained" onClick={onEnroll}>
+                    Search
+                  </Button>
+                </Box>
+              </Box>
+            )}
+          </Box>
+        </Grid>
+      </Grid>
     </Box>
   );
 };

@@ -20,6 +20,7 @@ export const AppContext = ({ children }) => {
   const [employee, setEmployee] = React.useState();
   const [logs, setLogs] = React.useState([]);
   const logsRef = React.useRef([]);
+  const [contractDetail, setContractDetail] = React.useState();
   const [links, setLinks] = React.useState([
     {
       label: "Home",
@@ -47,7 +48,7 @@ export const AppContext = ({ children }) => {
       show: true,
     },
   ]);
-  const [contractDetail, setContractDetail] = React.useState();
+
   React.useEffect(() => {
     if (contract) {
       contract.on("AddEvent", (createdBy, createdAddress, msg) => {
