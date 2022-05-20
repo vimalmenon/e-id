@@ -29,10 +29,16 @@ export const Home = () => {
     }
   };
   const onTest = () => {
-    signedContact.recruitEmployee("0xa16E02E87b7454126E5E10d957A927A7F5B5d2be", "0xB7A5bd0345EF1Cc5E66bf61BdeC17D2461fBd968" , "SSE").then((data) => {
+    signedContact
+      .recruitEmployee(
+        "0xa16E02E87b7454126E5E10d957A927A7F5B5d2be",
+        "0xB7A5bd0345EF1Cc5E66bf61BdeC17D2461fBd968",
+        "SSE"
+      )
+      .then((data) => {
         console.log(data);
-    })
-  }
+      });
+  };
   return (
     <Box sx={{ display: "flex", flexDirection: "column", flex: 1, padding: 2 }}>
       {open && (
@@ -44,18 +50,16 @@ export const Home = () => {
         />
       )}
       <Box sx={{ display: "flex", flexDirection: "column" }}>
-        <Box sx={{ display: "flex", marginY: 1 }}>
+        <Box sx={{ display: "flex", marginY: 1, gap: 2 }}>
           <Button variant="contained" onClick={onRegisterCompany}>
             Register a company
           </Button>
-        </Box>
-        <Box sx={{ display: "flex", marginY: 1 }}>
           <Button variant="contained" onClick={onEnrollEmployee}>
             Enroll a employee
           </Button>
-          <Button variant="contained" onClick={onTest}>
+          {/* <Button variant="contained" onClick={onTest}>
             Test
-          </Button>
+          </Button> */}
         </Box>
         {contractDetail && (
           <Box sx={{ display: "flex", flexDirection: "column", marginY: 1 }}>
