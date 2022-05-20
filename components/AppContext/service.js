@@ -1,6 +1,6 @@
 import React from "react";
 
-export const contractAddress = "0x3Aa5ebB10DC797CAC828524e59A333d0A371443c";
+export const contractAddress = "0xa85233C63b9Ee964Add6F2cffe00Fd84eb32338f";
 
 export const Context = React.createContext({
   contractAddress,
@@ -9,7 +9,9 @@ export const Context = React.createContext({
 export const useContext = () => React.useContext(Context);
 
 export const useAppHelper = () => {
-  const { signedContact, isLoggedIn, contract, provider } = useContext();
+  const { signedContact, isLoggedIn, contract, provider, address } =
+    useContext();
+
   const onEmployerRegister = (id, name) => {
     if (id && name && contract && isLoggedIn) {
       signedContact.registerEmployer(id, name).then((result) => {
@@ -17,11 +19,11 @@ export const useAppHelper = () => {
       });
     }
   };
-  const onEmployeeRegister = (id, name, address) => {
+  const onEmployeeRegister = (id, name, employeeAddress) => {
     if (id && name && contract && isLoggedIn) {
-      if (address) {
+      if (employeeAddress) {
         signedContact
-          .registerEmployeeWithPayee(id, name, address)
+          .registerEmployeeWithPayee(id, name, employeeAddress)
           .then((result) => {
             console.log(result);
           });
@@ -37,9 +39,13 @@ export const useAppHelper = () => {
     const signer = provider.getSigner();
     console.log("Account:", await signer.getAddress());
   };
-  const onEmployeeResign = async () => {
-    // console.log(signedContact.relieveEmployee())
-  }
+  const onEmployeeResign = async (employerAddress, employeeAddress) => {
+    signedContact
+      .relieveEmployee(employerAddress, employeeAddress)
+      .then((data) => {
+        console.log(data);
+      });
+  };
   return {
     onEmployerRegister,
     onEmployeeRegister,

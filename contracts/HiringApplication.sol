@@ -18,6 +18,7 @@ struct EmployeeDetail {
     string id;
     string name;
     bool isHirable;
+    address employeeAddress;
     address[] payees;
     string position;
     EmployementHistory[] employementHistory;
@@ -168,6 +169,7 @@ contract HiringApplication {
                 name: employee.getName(),
                 isHirable: employee.getIsHirable(),
                 payees: employee.getPayee(),
+                employeeAddress: _employeeAddress,
                 employementHistory: employee.getEmployementHistory(),
                 position: employee.getPosition()
             });

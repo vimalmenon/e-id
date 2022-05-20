@@ -1,23 +1,30 @@
 import TableRow from "@mui/material/TableRow";
 import TableCell from "@mui/material/TableCell";
-import { useContext } from "../components";
+import { useContext, useAppHelper } from "../components";
+import FileDownloadIcon from "@mui/icons-material/FileDownload";
 import React from "react";
 
-export const EmployerTableCell = ({ employee }) => {
+export const EmployerTableCell = ({ employee, employerAddress }) => {
   const { contract } = useContext();
+  const { onEmployeeResign } = useAppHelper();
   const [employeeDetail, setEmployee] = React.useState({});
   React.useEffect(() => {
     contract.getEmployeeDetails(employee).then((data) => {
       setEmployee(data);
     });
   }, []);
-  console.log(employeeDetail);
+
   return (
     <TableRow>
       <TableCell>{employeeDetail.id}</TableCell>
       <TableCell>{employeeDetail.name}</TableCell>
       <TableCell>{employee}</TableCell>
-      <TableCell>{employee}</TableCell>
+      <TableCell>{employeeDetail.position}</TableCell>
+      <TableCell align="right">
+        <FileDownloadIcon
+          onClick={() => onEmployeeResign(employerAddress, employee)}
+        />
+      </TableCell>
     </TableRow>
   );
 };

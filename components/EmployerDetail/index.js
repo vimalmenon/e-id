@@ -114,13 +114,14 @@ export const EmployerDetail = () => {
                           <TableCell>ID</TableCell>
                           <TableCell>Name</TableCell>
                           <TableCell>Address</TableCell>
+                          <TableCell>Position</TableCell>
                           <TableCell align="right">Action</TableCell>
                         </TableRow>
                       </TableHead>
                       <TableBody>
                         {employer.employees.map((employee, key) => {
                           return (
-                            <EmployerTableCell employee={employee} key={key} />
+                            <EmployerTableCell employee={employee} employerAddress={employer.employerAddress} key={key} />
                           );
                         })}
                       </TableBody>

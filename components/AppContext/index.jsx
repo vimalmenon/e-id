@@ -49,7 +49,6 @@ export const AppContext = ({ children }) => {
       show: true,
     },
   ]);
-
   React.useEffect(() => {
     if (contract) {
       contract.on("AddEvent", (createdBy, createdAddress, msg) => {
@@ -139,6 +138,7 @@ export const AppContext = ({ children }) => {
         contractAddress,
         contractDetail,
         signedContact,
+        setEmployer,
         isLoggedIn,
         contract,
         accounts,
