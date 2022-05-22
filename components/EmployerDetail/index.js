@@ -80,7 +80,7 @@ export const EmployerDetail = () => {
           }}
         >
           <Button variant="contained" onClick={() => setEnroll(!enroll)}>
-            {!enroll ? "Enroll Employee" : "Show Employees"}
+            {!enroll ? "Recruit Employee" : "Show Employees"}
           </Button>
         </Box>
       </Box>

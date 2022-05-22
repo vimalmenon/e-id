@@ -14,7 +14,7 @@ const Transition = React.forwardRef(function Transition(props, ref) {
   return <Slide direction="up" ref={ref} {...props} />;
 });
 
-const pages = ["Register a company", "Register employee"];
+const pages = ["Register company", "Register employee"];
 export const RegisterDialog = ({ open, onClose, page = 0, onSave }) => {
   const [selectedPage, setSelectedPage] = React.useState(page);
   const [input, setInput] = React.useState({
@@ -90,17 +90,19 @@ export const RegisterDialog = ({ open, onClose, page = 0, onSave }) => {
                 fullWidth
               />
             </Box>
-            <Box sx={{ marginY: 2 }}>
-              <TextField
-                label="Address"
-                variant="outlined"
-                size="small"
-                value={input.address}
-                name="address"
-                onChange={onInputChange}
-                fullWidth
-              />
-            </Box>
+            {selectedPage === 1 && (
+              <Box sx={{ marginY: 2 }}>
+                <TextField
+                  label="Address"
+                  variant="outlined"
+                  size="small"
+                  value={input.address}
+                  name="address"
+                  onChange={onInputChange}
+                  fullWidth
+                />
+              </Box>
+            )}
           </Box>
         </Box>
       </DialogContent>

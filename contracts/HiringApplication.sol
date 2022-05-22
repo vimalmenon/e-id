@@ -47,6 +47,7 @@ contract HiringApplication {
         public
         payable
     {
+        require(address(getEmployerAddress(msg.sender)) == address(0x0), "Payee already registered");
         Employer employer = new Employer(
             id,
             companyName,
