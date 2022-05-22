@@ -28,17 +28,6 @@ export const Home = () => {
       onEmployerRegister(value.id, value.name);
     }
   };
-  const onTest = () => {
-    signedContact
-      .recruitEmployee(
-        "0xa16E02E87b7454126E5E10d957A927A7F5B5d2be",
-        "0xB7A5bd0345EF1Cc5E66bf61BdeC17D2461fBd968",
-        "SSE"
-      )
-      .then((data) => {
-        console.log(data);
-      });
-  };
   return (
     <Box sx={{ display: "flex", flexDirection: "column", flex: 1, padding: 2 }}>
       {open && (

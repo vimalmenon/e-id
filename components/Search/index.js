@@ -7,12 +7,6 @@ import MenuItem from "@mui/material/MenuItem";
 import FormControl from "@mui/material/FormControl";
 import Select from "@mui/material/Select";
 import { useRouter } from "next/router";
-import Card from "@mui/material/Card";
-import CardContent from "@mui/material/CardContent";
-import CardHeader from "@mui/material/CardHeader";
-import IconButton from "@mui/material/IconButton";
-import CircleIcon from "@mui/icons-material/Circle";
-import Tooltip from "@mui/material/Tooltip";
 import Badge from "@mui/material/Badge";
 
 import Table from "@mui/material/Table";
@@ -23,11 +17,9 @@ import TableHead from "@mui/material/TableHead";
 import TableRow from "@mui/material/TableRow";
 import Paper from "@mui/material/Paper";
 
-import { QRCodeCanvas } from "qrcode.react";
-
 import { useContext } from "../";
 
-import { EmployeeTableCell } from "../../common";
+import { EmployeeTableCell, QRCodeComponent } from "../../common";
 
 export const Search = () => {
   const [type, setType] = React.useState("");
@@ -79,6 +71,12 @@ export const Search = () => {
       }
     }
   }, [query]);
+  const getSubTitle = (detail) => {
+    if (detail.position) {
+      return `${detail.id} (${detail.position})`;
+    }
+    return detail.id;
+  };
   return (
     <Box
       sx={{
@@ -125,43 +123,12 @@ export const Search = () => {
           sx={{ flex: 1, justifyContent: "center", marginY: 2, gap: 2 }}
         >
           <Box display={"flex"} sx={{ flex: "0 0 300px" }}>
-            <Card>
-              <CardHeader
-                title={`${detail.name}`}
-                subheader={`${detail.id} (${detail.position})`}
-                action={
-                  <IconButton aria-label="settings">
-                    <Tooltip title={detail.isHirable ? "Available" : "Working"}>
-                      <CircleIcon
-                        sx={{
-                          color: detail.isHirable ? "green" : "orange",
-                        }}
-                      />
-                    </Tooltip>
-                  </IconButton>
-                }
-              />
-              <CardContent>
-                <Box
-                  sx={{
-                    display: "flex",
-                    justifyContent: "center",
-                    marginBottom: 3,
-                  }}
-                >
-                  <QRCodeCanvas
-                    value={detail.employeeAddress}
-                    size={500}
-                    style={{ width: "210px", height: "230px" }}
-                  />
-                </Box>
-                <Box
-                  sx={{ flex: 2, display: "flex", justifyContent: "center" }}
-                >
-                  {detail.employeeAddress}
-                </Box>
-              </CardContent>
-            </Card>
+            <QRCodeComponent
+              title={detail.name}
+              subTitle={getSubTitle(detail)}
+              address={detail.employeeAddress}
+              isHirable={detail.isHirable}
+            />
           </Box>
           <Box display={"flex"}>
             <TableContainer component={Paper}>
@@ -191,29 +158,11 @@ export const Search = () => {
         >
           <Box display={"flex"} sx={{ flex: "0 0 300px" }}>
             <Badge color="secondary" badgeContent={detail.employees.length}>
-              <Card>
-                <CardHeader title={detail.name} subheader={detail.id} />
-                <CardContent>
-                  <Box
-                    sx={{
-                      display: "flex",
-                      justifyContent: "center",
-                      marginBottom: 3,
-                    }}
-                  >
-                    <QRCodeCanvas
-                      value={detail.employerAddress}
-                      size={500}
-                      style={{ width: "210px", height: "230px" }}
-                    />
-                  </Box>
-                  <Box
-                    sx={{ flex: 2, display: "flex", justifyContent: "center" }}
-                  >
-                    {detail.employerAddress}
-                  </Box>
-                </CardContent>
-              </Card>
+              <QRCodeComponent
+                title={detail.name}
+                subTitle={detail.id}
+                address={detail.employerAddress}
+              />
             </Badge>
           </Box>
           <Box display={"flex"}></Box>

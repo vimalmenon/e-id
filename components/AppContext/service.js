@@ -9,12 +9,12 @@ export const Context = React.createContext({
 export const useContext = () => React.useContext(Context);
 
 export const useAppHelper = () => {
-  const { signedContact, isLoggedIn, contract, provider, address, employer } =
+  const { signedContract, isLoggedIn, contract, provider, address, employer } =
     useContext();
 
   const onEmployerRegister = (id, name) => {
     if (id && name && contract && isLoggedIn) {
-      signedContact.registerEmployer(id, name).then((result) => {
+      signedContract.registerEmployer(id, name).then((result) => {
         console.log(result);
       });
     }
@@ -22,13 +22,13 @@ export const useAppHelper = () => {
   const onEmployeeRegister = (id, name, employeeAddress) => {
     if (id && name && contract && isLoggedIn) {
       if (employeeAddress) {
-        signedContact
+        signedContract
           .registerEmployeeWithPayee(id, name, employeeAddress)
           .then((result) => {
             console.log(result);
           });
       } else {
-        signedContact.registerEmployee(id, name).then((result) => {
+        signedContract.registerEmployee(id, name).then((result) => {
           console.log(result);
         });
       }
@@ -40,14 +40,14 @@ export const useAppHelper = () => {
     console.log("Account:", await signer.getAddress());
   };
   const onEmployeeResign = async (employerAddress, employeeAddress) => {
-    signedContact
+    signedContract
       .relieveEmployee(employerAddress, employeeAddress)
       .then((data) => {
         console.log(data);
       });
   };
   const onEmployeeRecruit = (employeeAddress, position) => {
-    signedContact.recruitEmployee(
+    signedContract.recruitEmployee(
       employer.employerAddress,
       employeeAddress,
       position

@@ -12,7 +12,7 @@ export { useContext, useAppHelper } from "./service";
 export const AppContext = ({ children }) => {
   const [provider, setProvider] = React.useState();
   const [contract, setContract] = React.useState();
-  const [signedContact, setSignedContract] = React.useState();
+  const [signedContract, setSignedContract] = React.useState();
   const [signer, setSigner] = React.useState();
   const [isLoggedIn, setIsLoggedIn] = React.useState(false);
   const [address, setAddress] = React.useState();
@@ -137,7 +137,7 @@ export const AppContext = ({ children }) => {
       value={{
         contractAddress,
         contractDetail,
-        signedContact,
+        signedContract,
         setEmployer,
         isLoggedIn,
         contract,
