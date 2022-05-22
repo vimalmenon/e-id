@@ -9,7 +9,7 @@ export const Context = React.createContext({
 export const useContext = () => React.useContext(Context);
 
 export const useAppHelper = () => {
-  const { signedContact, isLoggedIn, contract, provider, address } =
+  const { signedContact, isLoggedIn, contract, provider, address, employer } =
     useContext();
 
   const onEmployerRegister = (id, name) => {
@@ -46,9 +46,17 @@ export const useAppHelper = () => {
         console.log(data);
       });
   };
+  const onEmployeeRecruit = (employeeAddress, position) => {
+    signedContact.recruitEmployee(
+      employer.employerAddress,
+      employeeAddress,
+      position
+    );
+  };
   return {
     onEmployerRegister,
     onEmployeeRegister,
+    onEmployeeRecruit,
     onEmployeeResign,
     metamaskLogin,
   };

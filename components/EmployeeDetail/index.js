@@ -58,7 +58,7 @@ export const EmployeeDetail = () => {
               <Card>
                 <CardHeader
                   title={employee.name}
-                  subheader={employee.id}
+                  subheader={`${employee.id} (${employee.position})`}
                   action={
                     <IconButton aria-label="settings">
                       <Tooltip
