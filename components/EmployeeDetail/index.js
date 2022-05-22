@@ -1,15 +1,12 @@
 import React from "react";
 import Box from "@mui/material/Box";
 import { useContext } from "../";
-import { RegisterDialog, EmployeeTableCell } from "../../common";
+import {
+  RegisterDialog,
+  EmployeeTableCell,
+  QRCodeComponent,
+} from "../../common";
 
-import Card from "@mui/material/Card";
-import CardContent from "@mui/material/CardContent";
-import CardHeader from "@mui/material/CardHeader";
-import { QRCodeCanvas } from "qrcode.react";
-import IconButton from "@mui/material/IconButton";
-import CircleIcon from "@mui/icons-material/Circle";
-import Tooltip from "@mui/material/Tooltip";
 import Grid from "@mui/material/Grid";
 
 import Table from "@mui/material/Table";
@@ -25,6 +22,12 @@ export const EmployeeDetail = () => {
   const [open, setOpen] = React.useState(false);
   const onClose = () => {
     setOpen(false);
+  };
+  const getSubTitle = (detail) => {
+    if (detail.position) {
+      return `${detail.id} (${detail.position})`;
+    }
+    return detail.id;
   };
   return (
     <Box sx={{ display: "flex", flexDirection: "column", flex: 1, padding: 2 }}>
@@ -55,45 +58,12 @@ export const EmployeeDetail = () => {
         {employee && (
           <Grid container spacing={2}>
             <Grid item xs={3}>
-              <Card>
-                <CardHeader
-                  title={employee.name}
-                  subheader={`${employee.id} (${employee.position})`}
-                  action={
-                    <IconButton aria-label="settings">
-                      <Tooltip
-                        title={employee.isHirable ? "Available" : "Working"}
-                      >
-                        <CircleIcon
-                          sx={{
-                            color: employee.isHirable ? "green" : "orange",
-                          }}
-                        />
-                      </Tooltip>
-                    </IconButton>
-                  }
-                />
-                <CardContent>
-                  <Box
-                    sx={{
-                      display: "flex",
-                      justifyContent: "center",
-                      marginBottom: 3,
-                    }}
-                  >
-                    <QRCodeCanvas
-                      value={employee.employeeAddress}
-                      size={500}
-                      style={{ width: "210px", height: "230px" }}
-                    />
-                  </Box>
-                  <Box
-                    sx={{ flex: 2, display: "flex", justifyContent: "center" }}
-                  >
-                    {employee.employeeAddress}
-                  </Box>
-                </CardContent>
-              </Card>
+              <QRCodeComponent
+                title={employee.name}
+                subTitle={getSubTitle(employee)}
+                address={employee.employeeAddress}
+                isHirable={employee.isHirable}
+              />
             </Grid>
             <Grid item xs={9}>
               <Box sx={{ display: "flex" }}>
