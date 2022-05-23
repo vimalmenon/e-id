@@ -7,7 +7,6 @@ contract Employer {
     string private id;
     string private companyName;
     uint256 private employeeCount;
-    uint256 private verifiedCount;
     uint256 private stakeAmount;
     address[] private payees;
     Employee[] private employeeList;
@@ -82,5 +81,9 @@ contract Employer {
 
     function getId() public view returns (string memory) {
         return id;
+    }
+
+    function getStakeAmount() public view returns (uint256) {
+        return stakeAmount;
     }
 }

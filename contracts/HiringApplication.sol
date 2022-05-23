@@ -9,8 +9,8 @@ struct EmployerDetail {
     string id;
     string name;
     address employerAddress;
-    uint256 employeeCount;
     address[] payees;
+    uint256 amount;
     Employee[] employees;
 }
 
@@ -141,8 +141,8 @@ contract HiringApplication {
                 id: employer.getId(),
                 name: employer.getName(),
                 employerAddress: _empoyerAddress,
-                employeeCount: employer.getEmployeeCount(),
                 payees: employer.getPayees(),
+                amount: employer.getStakeAmount(),
                 employees: employer.getEmployees()
             });
     }
