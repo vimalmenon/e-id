@@ -1,6 +1,7 @@
 import React from "react";
+import { ethers } from "ethers";
 
-export const contractAddress = "0xCf7Ed3AccA5a467e9e704C703E8D87F634fB0Fc9";
+export const contractAddress = "0x5FC8d32690cc91D4c39d9d3abcBD16989F875707";
 
 export const Context = React.createContext({
   contractAddress,
@@ -9,12 +10,13 @@ export const Context = React.createContext({
 export const useContext = () => React.useContext(Context);
 
 export const useAppHelper = () => {
-  const { signedContract, isLoggedIn, contract, provider, address, employer } =
+  const { signedContract, isLoggedIn, contract, provider, employer } =
     useContext();
 
   const onEmployerRegister = (id, name) => {
     if (id && name && contract && isLoggedIn) {
-      signedContract.registerEmployer(id, name).then((result) => {
+      const options = { value: ethers.utils.parseEther("5.0") };
+      signedContract.registerEmployer(id, name, options).then((result) => {
         console.log(result);
       });
     }
@@ -23,7 +25,7 @@ export const useAppHelper = () => {
     if (id && name && contract && isLoggedIn) {
       if (employeeAddress) {
         signedContract
-          .registerEmployeeWithPayee(id, name, employeeAddress)
+          .registerEmployeeWithPayee(id, name, employeeAddress, options)
           .then((result) => {
             console.log(result);
           });

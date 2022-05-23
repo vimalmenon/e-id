@@ -5,8 +5,10 @@ import Button from "@mui/material/Button";
 
 import { RegisterDialog } from "../../common";
 
+import { convertToEther } from "../../utility";
+
 export const Home = () => {
-  const { contractDetail, signedContact, contract } = useContext();
+  const { contractDetail } = useContext();
   const { onEmployeeRegister, onEmployerRegister } = useAppHelper();
   const [page, setPage] = React.useState(0);
   const [open, setOpen] = React.useState(false);
@@ -73,7 +75,8 @@ export const Home = () => {
             <Box sx={{ display: "flex", marginY: 1 }}>
               <Box sx={{ display: "flex", flex: 1 }}>Contract Balance</Box>
               <Box sx={{ display: "flex", flex: 2 }}>
-                {contractDetail.contractBalance.toNumber()}
+                {convertToEther(contractDetail?.contractBalance?.toString())}{" "}
+                ETH
               </Box>
             </Box>
           </Box>

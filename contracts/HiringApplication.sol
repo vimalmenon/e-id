@@ -47,7 +47,10 @@ contract HiringApplication {
         public
         payable
     {
-        require(address(getEmployerAddress(msg.sender)) == address(0x0), "Payee already registered");
+        require(
+            address(getEmployerAddress(msg.sender)) == address(0x0),
+            "Payee already registered"
+        );
         Employer employer = new Employer(
             id,
             companyName,
@@ -74,7 +77,7 @@ contract HiringApplication {
         emit AddEvent(
             msg.sender,
             address(employee),
-            string(abi.encodePacked("Employee ", employeeName, " added"))
+            string(abi.encodePacked("Company ", employeeName, " added"))
         );
     }
 
