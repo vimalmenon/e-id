@@ -63,7 +63,7 @@ contract HiringApplication {
             msg.sender,
             address(employer),
             string(
-                abi.encodePacked("Employer ", companyName, " has been added")
+                abi.encodePacked("Company ", companyName, " added")
             )
         );
     }
@@ -77,7 +77,7 @@ contract HiringApplication {
         emit AddEvent(
             msg.sender,
             address(employee),
-            string(abi.encodePacked("Company ", employeeName, " added"))
+            string(abi.encodePacked("Employee ", employeeName, " added"))
         );
     }
 
