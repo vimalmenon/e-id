@@ -30,10 +30,7 @@ export const Home = () => {
       onEmployeeRegister(value.id, value.name, value.address);
     } else {
       setLoading(true);
-      onEmployerRegister(value.id, value.name).then(() => {
-        console.log("this is loading");
-        setLoading(false);
-      });
+      onEmployerRegister(value.id, value.name);
     }
   };
   return (

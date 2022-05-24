@@ -1,6 +1,6 @@
 import React from "react";
 import Box from "@mui/material/Box";
-import { useAppHelper, useContext } from "../";
+import { useContext, useContractHelper } from "../";
 import {
   RegisterDialog,
   QRCodeComponent,
@@ -21,8 +21,8 @@ import Button from "@mui/material/Button";
 import TextField from "@mui/material/TextField";
 
 export const EmployerDetail = () => {
-  const { employer, contract } = useContext();
-  const { onEmployeeRecruit } = useAppHelper();
+  const { company, contract } = useContext();
+  const { onEmployeeRecruit } = useContractHelper();
   const [open, setOpen] = React.useState(false);
   const [enroll, setEnroll] = React.useState(false);
   const [employeeAddress, setEmployeeAddress] = React.useState("");
@@ -46,6 +46,11 @@ export const EmployerDetail = () => {
       return `${detail.id} (${detail.position})`;
     }
     return detail.id;
+  };
+  const handleRecruit = () => {
+    onEmployeeRecruit(employeeAddress, position).then(() => {
+      setEnroll(false);
+    });
   };
   return (
     <Box sx={{ display: "flex", flexDirection: "column", flex: 1, padding: 2 }}>
@@ -84,14 +89,14 @@ export const EmployerDetail = () => {
           </Button>
         </Box>
       </Box>
-      {employer && (
+      {company && (
         <Grid container spacing={2}>
           <Grid item xs={3}>
             <Box sx={{ display: "flex", flexDirection: "column", gap: "2px" }}>
               <QRCodeComponent
-                title={employer.name}
-                subTitle={employer.id}
-                address={employer.employerAddress}
+                title={company.name}
+                subTitle={company.id}
+                address={company.employerAddress}
               />
             </Box>
           </Grid>
@@ -111,11 +116,11 @@ export const EmployerDetail = () => {
                         </TableRow>
                       </TableHead>
                       <TableBody>
-                        {employer.employees.map((employee, key) => {
+                        {company.employees.map((employee, key) => {
                           return (
                             <EmployerTableCell
                               employee={employee}
-                              employerAddress={employer.employerAddress}
+                              employerAddress={company.employerAddress}
                               key={key}
                             />
                           );
@@ -204,12 +209,7 @@ export const EmployerDetail = () => {
                           />
                         </Box>
                         <Box sx={{ display: "flex", flex: "0 0 50px" }}>
-                          <Button
-                            variant="contained"
-                            onClick={() =>
-                              onEmployeeRecruit(employeeAddress, position)
-                            }
-                          >
+                          <Button variant="contained" onClick={handleRecruit}>
                             Recruit
                           </Button>
                         </Box>

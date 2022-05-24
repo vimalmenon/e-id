@@ -10,21 +10,21 @@ import { blue } from "@mui/material/colors";
 import { useContext, Metamask, Skeleton } from "../components";
 import LinearProgress from "@mui/material/LinearProgress";
 
-const renderBody = ({ children, contract, provider, address, loading }) => {
-  if (contract && provider && address) {
+const renderBody = ({ children, address, loading }) => {
+  if (loading) {
     return (
-      <Box sx={{ marginTop: "49px", display: "flex", flexDirection: "column" }}>
+      <Box sx={{ marginTop: "70px", display: "flex", flexDirection: "column" }}>
         {loading && (
           <Box sx={{ width: "100%" }}>
             <LinearProgress />
           </Box>
         )}
-        {children}
+        <Skeleton />
       </Box>
     );
-  } else if (contract && provider) {
+  } else if (!address) {
     return (
-      <Box sx={{ marginTop: "49px", display: "flex", flexDirection: "column" }}>
+      <Box sx={{ marginTop: "70px", display: "flex", flexDirection: "column" }}>
         {loading && (
           <Box sx={{ width: "100%" }}>
             <LinearProgress />
@@ -35,20 +35,20 @@ const renderBody = ({ children, contract, provider, address, loading }) => {
     );
   } else {
     return (
-      <Box sx={{ marginTop: "49px", display: "flex", flexDirection: "column" }}>
+      <Box sx={{ marginTop: "70px", display: "flex", flexDirection: "column" }}>
         {loading && (
           <Box sx={{ width: "100%" }}>
             <LinearProgress />
           </Box>
         )}
-        <Skeleton />
+        {children}
       </Box>
     );
   }
 };
 export const AppLayout = ({ children, metadata }) => {
   const { push } = useRouter();
-  const { links, address, contract, provider, loading } = useContext();
+  const { links, address, loading } = useContext();
   return (
     <Box
       component={"section"}
@@ -104,7 +104,7 @@ export const AppLayout = ({ children, metadata }) => {
           </Box>
         </Toolbar>
       </AppBar>
-      {renderBody({ children, provider, contract, address, loading })}
+      {renderBody({ children, address, loading })}
       <Box
         sx={{
           display: "flex",

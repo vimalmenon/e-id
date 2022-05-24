@@ -5,7 +5,7 @@ import { isEmptyContract } from "../../utility";
 
 import HiringApplication from "../../src/artifacts/contracts/HiringApplication.sol/HiringApplication.json";
 
-export const contractAddress = "0x9A676e781A523b5d0C0e43731313A708CB607508";
+export const contractAddress = "0x9fE46736679d2D9a65F0992F2272dE9f3c7fa6e0";
 
 export const Context = React.createContext({
   contractAddress,
@@ -17,12 +17,12 @@ export const useAppHelper = () => {
   const { signedContract, isLoggedIn, contract, provider, employer } =
     useContext();
 
-  const onEmployerRegister = (id, name) => {
+  const onEmployerRegister = async (id, name) => {
     if (id && name && contract && isLoggedIn) {
       const options = { value: ethers.utils.parseEther("5.0") };
-      signedContract.registerEmployer(id, name, options).then((result) => {
-        console.log(result);
-      });
+      const result = await signedContract.registerEmployer(id, name, options);
+      const wait = await result.wait();
+      console.log("this is called", wait);
     }
   };
   const onEmployeeRegister = (id, name, employeeAddress) => {
@@ -49,7 +49,6 @@ export const useAppHelper = () => {
               });
             })
             .catch((data) => {
-              console.log(data);
               reject("No value");
             });
         }
@@ -86,45 +85,87 @@ export const useAppHelper = () => {
 
 export const useContractHelper = () => {
   const {
-    signer,
+    company,
     contract,
+    setLoading,
     setCompany,
     setAddress,
     setEmployee,
+    signedContract,
     setContractDetail,
   } = useContext();
-  const getContractDetail = () => {
-    contract.getContractDetail().then((data) => {
-      setContractDetail(data);
-    });
+  const getContract = () => {
+    const provider = new ethers.providers.Web3Provider(window.ethereum);
+    const contract = new ethers.Contract(
+      contractAddress,
+      HiringApplication.abi,
+      provider
+    );
+    const signer = provider.getSigner();
+    const signedContract = new ethers.Contract(
+      contractAddress,
+      HiringApplication.abi,
+      signer
+    );
+    return { provider, contract, signer, signedContract };
   };
-  const getAddress = () => {
-    signer.getAddress().then((address) => {
-      setAddress(address);
-    });
+  const getContractDetail = async () => {
+    const { contract } = getContract();
+    const contractDetail = await contract.getContractDetail();
+    setContractDetail(contractDetail);
   };
-  const getEmployerDetails = (address) => {
-    contract.getEmployerAddress(address).then((data) => {
-      if (!isEmptyContract(data)) {
-        contract.getEmployerDetails(data).then((detail) => {
-          setCompany(detail);
+  const getAddress = async () => {
+    const { signer } = getContract();
+    const address = await signer.getAddress();
+    setAddress(address);
+  };
+  const getEmployerDetails = async (address) => {
+    const { contract } = getContract();
+    const employerAddress = await contract.getEmployerAddress(address);
+    if (!isEmptyContract(employerAddress)) {
+      const company = await contract.getEmployerDetails(employerAddress);
+      setCompany(company);
+    }
+  };
+  const getEmployeeDetails = async (address) => {
+    const { contract } = getContract();
+    const employeeAddress = await contract.getEmployeeAddress(address);
+    if (!isEmptyContract(employeeAddress)) {
+      const employee = await contract.getEmployeeDetails(employeeAddress);
+      setEmployee(employee);
+    }
+  };
+  const onEmployeeRecruit = (employeeAddress, position) => {
+    setLoading(true);
+    return new Promise((resolve, reject) => {
+      signedContract
+        .recruitEmployee(company.employerAddress, employeeAddress, position)
+        .then((result) => {
+          result.wait().then((data) => {
+            console.log(data);
+            getEmployerDetails(employeeAddress).then(() => {
+              setLoading(false);
+              resolve(data);
+            });
+          });
         });
-      }
     });
   };
-  const getEmployeeDetails = (address) => {
-    contract.getEmployeeAddress(address).then((data) => {
-      if (!isEmptyContract(data)) {
-        contract.getEmployeeDetails(data).then((detail) => {
-          setEmployee(detail);
-        });
-      }
-    });
+  const onEmployerRegister = async (id, name) => {
+    if (id && name && contract && isLoggedIn) {
+      const options = { value: ethers.utils.parseEther("5.0") };
+      const result = await signedContract.registerEmployer(id, name, options);
+      const wait = await result.wait();
+      console.log("this is called", wait);
+    }
   };
   return {
+    onEmployerRegister,
     getEmployerDetails,
     getEmployeeDetails,
     getContractDetail,
+    onEmployeeRecruit,
+    getContract,
     getAddress,
   };
 };
@@ -146,43 +187,27 @@ export const useContextHelper = () => {
     setSignedContract,
   } = useContext();
   const {
-    getContractDetail,
     getAddress,
-    getEmployeeDetails,
+    getContract,
+    getContractDetail,
     getEmployerDetails,
+    getEmployeeDetails,
   } = useContractHelper();
   React.useEffect(() => {
     if (typeof window.ethereum !== undefined) {
-      const provider = new ethers.providers.Web3Provider(window.ethereum);
-      const contract = new ethers.Contract(
-        contractAddress,
-        HiringApplication.abi,
-        provider
-      );
-      const signer = provider.getSigner();
-      const signedContract = new ethers.Contract(
-        contractAddress,
-        HiringApplication.abi,
-        signer
-      );
+      const { provider } = getContract();
       provider.listAccounts().then((accounts) => {
         setLoading(false);
         setIsLoggedIn(accounts.length > 0);
       });
-
-      // Setting the value
-      setSigner(signer);
-      setProvider(provider);
-      setContract(contract);
-      setSignedContract(signedContract);
     }
   }, []);
   React.useEffect(() => {
-    if (contract && signer && isLoggedIn) {
+    if (isLoggedIn) {
       getAddress();
       getContractDetail();
     }
-  }, [contract, signer, isLoggedIn]);
+  }, [isLoggedIn]);
   React.useEffect(() => {
     setLinks([
       {
@@ -213,7 +238,7 @@ export const useContextHelper = () => {
     ]);
   }, [employee, company]);
   React.useEffect(() => {
-    if (contract && address) {
+    if (address) {
       getEmployeeDetails(address);
       getEmployerDetails(address);
     }
