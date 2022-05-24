@@ -8,19 +8,39 @@ import Button from "@mui/material/Button";
 import { useRouter } from "next/router";
 import { blue } from "@mui/material/colors";
 import { useContext, Metamask, Skeleton } from "../components";
+import LinearProgress from "@mui/material/LinearProgress";
 
-const renderBody = ({ children, contract, provider, address }) => {
+const renderBody = ({ children, contract, provider, address, loading }) => {
   if (contract && provider && address) {
-    return <Box sx={{ marginTop: "70px", display: "flex" }}>{children}</Box>;
+    return (
+      <Box sx={{ marginTop: "49px", display: "flex", flexDirection: "column" }}>
+        {loading && (
+          <Box sx={{ width: "100%" }}>
+            <LinearProgress />
+          </Box>
+        )}
+        {children}
+      </Box>
+    );
   } else if (contract && provider) {
     return (
-      <Box sx={{ marginTop: "70px", display: "flex" }}>
+      <Box sx={{ marginTop: "49px", display: "flex", flexDirection: "column" }}>
+        {loading && (
+          <Box sx={{ width: "100%" }}>
+            <LinearProgress />
+          </Box>
+        )}
         <Metamask />
       </Box>
     );
   } else {
     return (
-      <Box sx={{ marginTop: "70px", display: "flex" }}>
+      <Box sx={{ marginTop: "49px", display: "flex", flexDirection: "column" }}>
+        {loading && (
+          <Box sx={{ width: "100%" }}>
+            <LinearProgress />
+          </Box>
+        )}
         <Skeleton />
       </Box>
     );
@@ -28,7 +48,7 @@ const renderBody = ({ children, contract, provider, address }) => {
 };
 export const AppLayout = ({ children, metadata }) => {
   const { push } = useRouter();
-  const { links, address, contract, provider } = useContext();
+  const { links, address, contract, provider, loading } = useContext();
   return (
     <Box
       component={"section"}
@@ -84,7 +104,7 @@ export const AppLayout = ({ children, metadata }) => {
           </Box>
         </Toolbar>
       </AppBar>
-      {renderBody({ children, provider, contract, address })}
+      {renderBody({ children, provider, contract, address, loading })}
       <Box
         sx={{
           display: "flex",
@@ -93,7 +113,7 @@ export const AppLayout = ({ children, metadata }) => {
           paddingY: 1,
           paddingX: 2,
           color: "white",
-          marginY: 1,
+          marginBottom: 1,
           justifyContent: "end",
         }}
       >

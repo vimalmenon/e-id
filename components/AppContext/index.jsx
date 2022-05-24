@@ -1,54 +1,29 @@
 import React from "react";
-import { ethers } from "ethers";
 
-import { isEmptyContract } from "../../utility";
-
-import { Context, contractAddress } from "./service";
-
-import HiringApplication from "../../src/artifacts/contracts/HiringApplication.sol/HiringApplication.json";
+import { Context, useContextHelper } from "./service";
 
 export { useContext, useAppHelper } from "./service";
 
-export const AppContext = ({ children }) => {
+const NewAppContext = ({ children }) => {
+  useContextHelper();
+  return <React.Fragment>{children}</React.Fragment>;
+};
+
+export const AppContextWrapper = ({ children }) => {
+  const [loading, setLoading] = React.useState(true);
+  const [logs, setLogs] = React.useState([]);
+  const [contractDetail, setContractDetail] = React.useState();
+  const [signer, setSigner] = React.useState();
+  const [address, setAddress] = React.useState();
+  const [company, setCompany] = React.useState();
+  const [employee, setEmployee] = React.useState();
   const [provider, setProvider] = React.useState();
   const [contract, setContract] = React.useState();
   const [signedContract, setSignedContract] = React.useState();
-  const [signer, setSigner] = React.useState();
+  const [links, setLinks] = React.useState([]);
   const [isLoggedIn, setIsLoggedIn] = React.useState(false);
-  const [address, setAddress] = React.useState();
-  const [accounts, setAccounts] = React.useState([]);
-  const [employer, setEmployer] = React.useState();
-  const [employee, setEmployee] = React.useState();
-  const [logs, setLogs] = React.useState([]);
+
   const logsRef = React.useRef([]);
-  const [contractDetail, setContractDetail] = React.useState();
-  const [links, setLinks] = React.useState([
-    {
-      label: "Home",
-      link: "/",
-      show: true,
-    },
-    {
-      label: "Company",
-      link: "/company",
-      show: false,
-    },
-    {
-      label: "Employee",
-      link: "employee",
-      show: false,
-    },
-    {
-      label: "Search",
-      link: "/search",
-      show: true,
-    },
-    {
-      label: "Logs",
-      link: "/logs",
-      show: true,
-    },
-  ]);
   React.useEffect(() => {
     if (contract) {
       contract.on("AddEvent", (createdBy, createdAddress, msg) => {
@@ -65,110 +40,6 @@ export const AppContext = ({ children }) => {
       setLogs(logsRef.current);
     }
   }, 1000);
-  React.useEffect(() => {
-    if (typeof window.ethereum !== undefined) {
-      const provider = new ethers.providers.Web3Provider(window.ethereum);
-      setContract(
-        new ethers.Contract(contractAddress, HiringApplication.abi, provider)
-      );
-      const signer = provider.getSigner();
-      const signedContract = new ethers.Contract(
-        contractAddress,
-        HiringApplication.abi,
-        signer
-      );
-      setSignedContract(signedContract);
-      provider.listAccounts().then((accounts) => {
-        setAccounts(accounts);
-        setIsLoggedIn(accounts.length > 0);
-      });
-      setProvider(provider);
-      setSigner(signer);
-    }
-  }, []);
-  React.useEffect(() => {
-    if (contract && signer && isLoggedIn) {
-      signer.getAddress().then((address) => {
-        setAddress(address);
-      });
-    }
-  }, [contract, signer, isLoggedIn]);
-  React.useEffect(() => {
-    if (employer) {
-      const newLinks = [...links];
-      newLinks[1].show = true;
-      setLinks(newLinks);
-    }
-  }, [employer]);
-  React.useEffect(() => {
-    if (employee) {
-      const newLinks = [...links];
-      newLinks[2].show = true;
-      setLinks(newLinks);
-    }
-  }, [employee]);
-  React.useEffect(() => {
-    if (provider && contract) {
-      contract.getContractDetail().then((data) => {
-        setContractDetail(data);
-      });
-    }
-  }, [provider, contract]);
-  React.useEffect(() => {
-    if (contract && address) {
-      contract.getEmployerAddress(address).then((data) => {
-        if (!isEmptyContract(data)) {
-          contract.getEmployerDetails(data).then((detail) => {
-            setEmployer(detail);
-          });
-        }
-      });
-      contract.getEmployeeAddress(address).then((data) => {
-        if (!isEmptyContract(data)) {
-          contract.getEmployeeDetails(data).then((detail) => {
-            setEmployee(detail);
-          });
-        }
-      });
-    }
-  }, [contract, address]);
-  return (
-    <Context.Provider
-      value={{
-        contractAddress,
-        contractDetail,
-        signedContract,
-        setEmployer,
-        isLoggedIn,
-        contract,
-        accounts,
-        provider,
-        employee,
-        employer,
-        address,
-        signer,
-        links,
-        logs,
-      }}
-    >
-      {children}
-    </Context.Provider>
-  );
-};
-
-export const AppContextWrapper = ({ children }) => {
-  const [loading, setLoading] = React.useState(false);
-  const [logs, setLogs] = React.useState([]);
-  const [contractDetail, setContractDetail] = React.useState();
-  const [signer, setSigner] = React.useState();
-  const [address, setAddress] = React.useState();
-  const [company, setCompany] = React.useState();
-  const [employee, setEmployee] = React.useState();
-  const [provider, setProvider] = React.useState();
-  const [contract, setContract] = React.useState();
-  const [signedContract, setSignedContract] = React.useState();
-  const [links, setLinks] = React.useState([]);
-
   return (
     <Context.Provider
       value={{
@@ -176,9 +47,11 @@ export const AppContextWrapper = ({ children }) => {
         setSignedContract,
         contractDetail,
         signedContract,
+        setIsLoggedIn,
         setEmployee,
         setProvider,
         setContract,
+        isLoggedIn,
         setCompany,
         setLoading,
         setAddress,
@@ -196,7 +69,7 @@ export const AppContextWrapper = ({ children }) => {
         logs,
       }}
     >
-      {children}
+      <NewAppContext>{children}</NewAppContext>
     </Context.Provider>
   );
 };
