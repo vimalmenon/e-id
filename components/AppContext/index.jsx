@@ -155,3 +155,48 @@ export const AppContext = ({ children }) => {
     </Context.Provider>
   );
 };
+
+export const AppContextWrapper = ({ children }) => {
+  const [loading, setLoading] = React.useState(false);
+  const [logs, setLogs] = React.useState([]);
+  const [contractDetail, setContractDetail] = React.useState();
+  const [signer, setSigner] = React.useState();
+  const [address, setAddress] = React.useState();
+  const [company, setCompany] = React.useState();
+  const [employee, setEmployee] = React.useState();
+  const [provider, setProvider] = React.useState();
+  const [contract, setContract] = React.useState();
+  const [signedContract, setSignedContract] = React.useState();
+  const [links, setLinks] = React.useState([]);
+
+  return (
+    <Context.Provider
+      value={{
+        setContractDetail,
+        setSignedContract,
+        contractDetail,
+        signedContract,
+        setEmployee,
+        setProvider,
+        setContract,
+        setCompany,
+        setLoading,
+        setAddress,
+        setSigner,
+        employee,
+        setLinks,
+        provider,
+        contract,
+        company,
+        loading,
+        setLogs,
+        address,
+        signer,
+        links,
+        logs,
+      }}
+    >
+      {children}
+    </Context.Provider>
+  );
+};

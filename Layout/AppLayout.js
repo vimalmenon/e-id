@@ -9,6 +9,23 @@ import { useRouter } from "next/router";
 import { blue } from "@mui/material/colors";
 import { useContext, Metamask, Skeleton } from "../components";
 
+const renderBody = ({ children, contract, provider, address }) => {
+  if (contract && provider && address) {
+    return <Box sx={{ marginTop: "70px", display: "flex" }}>{children}</Box>;
+  } else if (contract && provider) {
+    return (
+      <Box sx={{ marginTop: "70px", display: "flex" }}>
+        <Metamask />
+      </Box>
+    );
+  } else {
+    return (
+      <Box sx={{ marginTop: "70px", display: "flex" }}>
+        <Skeleton />
+      </Box>
+    );
+  }
+};
 export const AppLayout = ({ children, metadata }) => {
   const { push } = useRouter();
   const { links, address, contract, provider } = useContext();
@@ -67,20 +84,7 @@ export const AppLayout = ({ children, metadata }) => {
           </Box>
         </Toolbar>
       </AppBar>
-      {contract && provider ? (
-        <React.Fragment>
-          {address ? (
-            <Box sx={{ marginTop: "70px", display: "flex" }}>{children}</Box>
-          ) : (
-            <Box sx={{ marginTop: "70px", display: "flex" }}>
-              <Metamask />
-            </Box>
-          )}
-        </React.Fragment>
-      ) : (
-        <Skeleton />
-      )}
-
+      {renderBody({ children, provider, contract, address })}
       <Box
         sx={{
           display: "flex",

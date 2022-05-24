@@ -1,4 +1,4 @@
-import { AppContext } from "../components";
+import { AppContextWrapper } from "../components";
 import { ThemeProvider } from "@mui/material/styles";
 import CssBaseline from "@mui/material/CssBaseline";
 import { CacheProvider } from "@emotion/react";
@@ -28,9 +28,9 @@ function MyApp({
     <CacheProvider value={emotionCache}>
       <ThemeProvider theme={theme}>
         <CssBaseline />
-        <AppContext>
+        <AppContextWrapper>
           <Component {...pageProps} />
-        </AppContext>
+        </AppContextWrapper>
       </ThemeProvider>
     </CacheProvider>
   );

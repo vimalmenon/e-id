@@ -1,13 +1,17 @@
 import * as React from "react";
 import MuiSkeleton from "@mui/material/Skeleton";
 import Stack from "@mui/material/Stack";
+import Box from "@mui/material/Box";
 
 export const Skeleton = () => {
   return (
-    <Stack spacing={1}>
-      <MuiSkeleton variant="text" />
-      <MuiSkeleton variant="circular" width={40} height={40} />
-      <MuiSkeleton variant="rectangular" width={210} height={118} />
-    </Stack>
+    <Box sx={{ display: "flex", flex: 1 }}>
+      <Stack spacing={1} sx={{ flex: 1, gap: 2, margin: 3 }}>
+        <MuiSkeleton variant="text" />
+        <MuiSkeleton variant="circular" width={60} height={60} />
+        <MuiSkeleton variant="rectangular" height={50} />
+        <MuiSkeleton variant="rectangular" height={50} />
+      </Stack>
+    </Box>
   );
 };
